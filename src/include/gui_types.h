@@ -12,3 +12,11 @@ typedef struct{
 
     int w, h;
 } GUI_window;
+
+typedef struct{
+    Uint8 r, g, b;
+} GUI_rgb;
+
+typedef struct{
+    Uint8 r, g, b, a;
+} GUI_rgba;

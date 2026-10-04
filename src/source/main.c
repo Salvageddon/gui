@@ -20,6 +20,18 @@ int main(int argc, char * argv[]){
                 break;
             }
         }
+
+        GUI_rgb color = (GUI_rgb){255, 0, 0};
+        Uint32 pixel = GUI_mapRGB(color, SDL_GetPixelFormatDetails(win->sur->format));
+        Uint32 * pixels = win->sur->pixels;
+
+        for(int y = 0; y < 100; y++){
+            for(int x = 0; x < 100; x++){
+                pixels[y * win->w + x] = pixel;
+            }
+        }
+
+        SDL_UpdateWindowSurface(win->win);
     }
 
     GUI_destroyWindow(win);
