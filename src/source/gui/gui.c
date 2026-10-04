@@ -29,6 +29,14 @@ void GUI_quit(void){
     quit();
 }
 
+void GUI_setPixel(SDL_Surface * sur, int x, int y, Uint32 pixel){
+    setPixel(sur, x, y, pixel);
+}
+
+Uint32 GUI_getPixel(SDL_Surface * sur, int x, int y){
+    return getPixel(sur, x, y);
+}
+
 GUI_rgb GUI_getRGB(Uint32 color, const SDL_PixelFormatDetails * formatDetails){
     return getRGB(color, formatDetails);
 }

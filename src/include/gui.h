@@ -36,6 +36,26 @@ void GUI_init(Uint32 flags);
 void GUI_quit(void);
 
 /*
+    Set specified pixel on a SDL_Surface
+    \param sur target SDL_Surface
+    \param x x coordinate of the pixel
+    \param y y coordinate of the pixel
+    \param pixel new pixel to be set
+    \warning for optimisation purposes location (x, y) is not checked if it exists on the sur. Also the surface is not checked for NULL
+*/
+void GUI_setPixel(SDL_Surface * sur, int x, int y, Uint32 pixel);
+
+/*
+    Get specified pixel from a SDL_Surface
+    \param sur target SDL_Surface
+    \param x x coordinate of the pixel
+    \param y y coordinate of the pixel
+    \returns color of the pixel
+    \warning for optimisation purposes location (x, y) is not checked if it exists on the sur. Also the surface is not checked for NULL
+*/
+Uint32 GUI_getPixel(SDL_Surface * sur, int x, int y);
+
+/*
     Convert Uint32 pixel into GUI_rgb
     \param color color stored in Uint32 pixel
     \param formatDetails SDL formatdetails passed for example from your SDL_Surface
