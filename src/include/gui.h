@@ -25,6 +25,28 @@ GUI_window * GUI_createWindow(char * title, int w, int h, Uint32 flags);
 void GUI_destroyWindow(GUI_window * window);
 
 /*
+    Draw a rectangle on SDL_Surface
+    \param sur target SDL_Surface
+    \param x x coordinate of the rectangle
+    \param y y coordinate of the rectangle
+    \param w width of the rectangle
+    \param h height of the rectangle
+    \param color color of the rectangle
+*/
+void GUI_drawRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
+
+/*
+    Draw a filled rectangle on SDL_Surface
+    \param sur target SDL_Surface
+    \param x x coordinate of the rectangle
+    \param y y coordinate of the rectangle
+    \param w width of the rectangle
+    \param h height of the rectangle
+    \param color color of the rectangle
+*/
+void GUI_fillRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
+
+/*
     Init SDL. Use this for SDL_Init().
     \param flags SDL flags
 */
@@ -34,3 +56,59 @@ void GUI_init(Uint32 flags);
     Quit SDL. Use this for SDL_Quit().
 */
 void GUI_quit(void);
+
+/*
+    Set specified pixel on a SDL_Surface
+    \param sur target SDL_Surface
+    \param x x coordinate of the pixel
+    \param y y coordinate of the pixel
+    \param pixel new pixel to be set
+    \warning for optimisation purposes location (x, y) is not checked if it exists on the sur. Also the surface is not checked for NULL
+*/
+void GUI_setPixel(SDL_Surface * sur, int x, int y, Uint32 pixel);
+
+/*
+    Get specified pixel from a SDL_Surface
+    \param sur target SDL_Surface
+    \param x x coordinate of the pixel
+    \param y y coordinate of the pixel
+    \returns color of the pixel
+    \warning for optimisation purposes location (x, y) is not checked if it exists on the sur. Also the surface is not checked for NULL
+*/
+Uint32 GUI_getPixel(SDL_Surface * sur, int x, int y);
+
+/*
+    Convert Uint32 pixel into GUI_rgb
+    \param color color stored in Uint32 pixel
+    \param formatDetails SDL formatdetails passed for example from your SDL_Surface
+    \returns color stored in GUI_rgb
+    \warning for optimisation purposes formatDetails is not checked for NULL
+*/
+GUI_rgb GUI_getRGB(Uint32 color, const SDL_PixelFormatDetails * formatDetails);
+
+/*
+    Convert GUI_rgb into Uint32 pixel
+    \param color color stored in GUI_rgb
+    \param formatDetails SDL formatdetails passed for example from your SDL_Surface
+    \returns color stored in Uint32 pixel
+    \warning for optimisation purposes formatDetails is not checked for NULL
+*/
+Uint32 GUI_mapRGB(GUI_rgb color, const SDL_PixelFormatDetails * formatDetails);
+
+/*
+    Convert Uint32 pixel into GUI_rgba
+    \param color color stored inUint32 pixel
+    \param formatDetails SDL formatdetails passed for example from your SDL_Surface
+    \returns color stored in GUI_rgba
+    \warning for optimisation purposes formatDetails is not checked for NULL
+*/
+GUI_rgba GUI_getRGBA(Uint32 color, const SDL_PixelFormatDetails * formatDetails);
+
+/*
+    Convert GUI_rgba into Uint32 pixel
+    \param color stored in GUI_rgba
+    \param formatDetails SDL formatdetails passed for example from your SDL_Surface
+    \returns color stored in Uint32 pixel
+    \warning for optimisation purposes formatDetails is not checked for NULL
+*/
+Uint32 GUI_mapRGBA(GUI_rgba color, const SDL_PixelFormatDetails * formatDetails);
