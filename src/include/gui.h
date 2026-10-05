@@ -25,6 +25,28 @@ GUI_window * GUI_createWindow(char * title, int w, int h, Uint32 flags);
 void GUI_destroyWindow(GUI_window * window);
 
 /*
+    Draw a rectangle on SDL_Surface
+    \param sur target SDL_Surface
+    \param x x coordinate of the rectangle
+    \param y y coordinate of the rectangle
+    \param w width of the rectangle
+    \param h height of the rectangle
+    \param color color of the rectangle
+*/
+void GUI_drawRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
+
+/*
+    Draw a filled rectangle on SDL_Surface
+    \param sur target SDL_Surface
+    \param x x coordinate of the rectangle
+    \param y y coordinate of the rectangle
+    \param w width of the rectangle
+    \param h height of the rectangle
+    \param color color of the rectangle
+*/
+void GUI_fillRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
+
+/*
     Init SDL. Use this for SDL_Init().
     \param flags SDL flags
 */

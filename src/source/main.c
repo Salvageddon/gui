@@ -21,14 +21,9 @@ int main(int argc, char * argv[]){
             }
         }
 
-        GUI_rgb color = (GUI_rgb){255, 0, 0};
-        Uint32 pixel = GUI_mapRGB(color, SDL_GetPixelFormatDetails(win->sur->format));
-
-        for(int y = 0; y < 100; y++){
-            for(int x = 0; x < 100; x++){
-                GUI_setPixel(win->sur, x, y, pixel);
-            }
-        }
+        GUI_fillRect(win->sur, 100, 100, 200, 50, 0xFF00FF);
+        GUI_drawRect(win->sur, 300, 100, 200, 50, 0xFF0000);
+        GUI_drawRect(win->sur, 100, 150, 200, 50, 0x0000FF);
 
         SDL_UpdateWindowSurface(win->win);
     }

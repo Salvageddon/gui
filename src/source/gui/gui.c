@@ -21,6 +21,24 @@ void GUI_destroyWindow(GUI_window * window){
     destroyWindow(window);
 }
 
+void GUI_drawRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color){
+    if(!sur){
+        printf("GUI (drawRect()): Surface cannot be NULL.\n");
+        return;
+    }
+
+    drawRect(sur, x, y, w, h, color);
+}
+
+void GUI_fillRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color){
+    if(!sur){
+        printf("GUI (fillRect()): Surface cannot be NULL.\n");
+        return;
+    }
+
+    fillRect(sur, x, y, w, h, color);
+}
+
 void GUI_init(Uint32 flags){
     init(flags);
 }
