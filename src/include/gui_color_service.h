@@ -1,6 +1,6 @@
 /*
     Color conversion functions
-    Violence
+    Fraud
 */
 
 #pragma once

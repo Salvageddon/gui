@@ -1,6 +1,6 @@
 /*
     Shape rendering functions
-    Wrath
+    Heresy
 */
 
 //NV stands for No Validation

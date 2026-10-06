@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "gui_context_service.h"
+#include "gui_baker_service.h"
 
 #include <SDL3/SDL.h>
 

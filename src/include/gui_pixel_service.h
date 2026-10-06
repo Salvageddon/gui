@@ -1,6 +1,6 @@
 /*
     Pixel operation functions
-    Heresy
+    Violence
 */
 
 #pragma once
