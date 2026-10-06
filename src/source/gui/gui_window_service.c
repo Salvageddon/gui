@@ -24,6 +24,7 @@ GUI_window * createWindow(char * title, int w, int h, Uint32 flags){
 
     win->w = w;
     win->h = h;
+    win->guiBase = NULL;
 
     SDL_ShowWindow(win->win);
 
@@ -31,6 +32,8 @@ GUI_window * createWindow(char * title, int w, int h, Uint32 flags){
 }
 
 void destroyWindow(GUI_window * win){
+    if(win->guiBase) destroyContext(win->guiBase);
+
     SDL_DestroyWindowSurface(win->win);
     SDL_DestroyWindow(win->win);
     free(win);

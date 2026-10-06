@@ -1,6 +1,6 @@
 /*
     Color conversion functions
-    Gluttony
+    Fraud
 */
 
 #pragma once

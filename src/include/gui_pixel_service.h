@@ -1,6 +1,6 @@
 /*
     Pixel operation functions
-    Lust
+    Violence
 */
 
 #pragma once

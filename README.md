@@ -2,7 +2,7 @@
 XML GUI library for C.
 
 # warning
-This library is under development. It doesn't even have the *gui* part yet.
+This library is under development. It BARELY has the *gui* part yet.
 
 # instruction
 1. init SDL using SDL_Init() or GUI_init()

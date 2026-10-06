@@ -9,6 +9,13 @@
 #include "gui_types.h"
 
 /*
+    Read GUI from and XML file.
+    \param source path to the XML file
+    \returns a GUI base context
+*/
+GUI_context * GUI_readGUI(const char * source);
+
+/*
     Create and show a window.
     \param title title of the window
     \param w width of the window
@@ -23,6 +30,38 @@ GUI_window * GUI_createWindow(char * title, int w, int h, Uint32 flags);
     \param window window to be destroyed
 */
 void GUI_destroyWindow(GUI_window * window);
+
+/*
+    Prepare GUI for rendering.
+    \param context baking starting point
+    \param format pixel format to bake controls in. Using one in your GUI_window->sur is recommended
+*/
+void GUI_bakeGUI(GUI_context * context, SDL_PixelFormat format);
+
+/*
+    Render baked GUI on the SDL_Surface.
+    \param context rendering starting point
+    \param sur target SDL_Surface
+    \warning before rendering, GUI MUST be baked using GUI_bakeGUI()
+*/
+void GUI_renderGUI(GUI_context * context, SDL_Surface * sur);
+
+/*
+    Free all GUI controls recursively.
+    \param context deletion starting point. Pass base to delete all GUI on a window
+*/
+void GUI_destroyGUI(GUI_context * context);
+
+/*
+    Init SDL. Use this for SDL_Init().
+    \param flags SDL flags
+*/
+void GUI_init(Uint32 flags);
+
+/*
+    Quit SDL. Use this for SDL_Quit().
+*/
+void GUI_quit(void);
 
 /*
     Draw a rectangle on SDL_Surface
@@ -45,17 +84,6 @@ void GUI_drawRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
     \param color color of the rectangle
 */
 void GUI_fillRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
-
-/*
-    Init SDL. Use this for SDL_Init().
-    \param flags SDL flags
-*/
-void GUI_init(Uint32 flags);
-
-/*
-    Quit SDL. Use this for SDL_Quit().
-*/
-void GUI_quit(void);
 
 /*
     Set specified pixel on a SDL_Surface
