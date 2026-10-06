@@ -2,6 +2,15 @@
 #include "../../include/gui_reader_service.h"
 #include <stdio.h>
 
+GUI_context * GUI_readGUI(const char * source){
+    if(!source){
+        printf("GUI (readGUI()): Source cannot be NULL.\n");
+        return NULL;
+    }
+
+    return readGui(source);
+}
+
 GUI_window * GUI_createWindow(char * title, int w, int h, Uint32 flags){
     if(!title){
         printf("GUI (createWindow()): Window title cannot be NULL.\n");
@@ -20,6 +29,46 @@ void GUI_destroyWindow(GUI_window * window){
     destroyWindow(window);
 }
 
+void GUI_bakeGUI(GUI_context * context, SDL_PixelFormat format){
+    if(!context){
+        printf("GUI (bakeGUI()): Context cannot be NULL.\n");
+        return;
+    }
+
+    bakeGui(context, format);
+}
+
+void GUI_renderGUI(GUI_context * context, SDL_Surface * sur){
+    if(!context){
+        printf("GUI (renderGUI()): Context cannot be NULL.\n");
+        return;
+    }
+
+    if(!sur){
+        printf("GUI (renderGUI()): Surface cannot be NULL.\n");
+        return;
+    }
+
+    renderGui(context, sur);
+}
+
+void GUI_destroyGUI(GUI_context * context){
+    if(!context){
+        printf("GUI (destroyGUI()): Context cannot be NULL.\n");
+        return;
+    }
+
+    destroyContext(context);
+}
+
+void GUI_init(Uint32 flags){
+    init(flags);
+}
+
+void GUI_quit(void){
+    quit();
+}
+
 void GUI_drawRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color){
     if(!sur){
         printf("GUI (drawRect()): Surface cannot be NULL.\n");
@@ -36,14 +85,6 @@ void GUI_fillRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color){
     }
 
     fillRect(sur, x, y, w, h, color);
-}
-
-void GUI_init(Uint32 flags){
-    init(flags);
-}
-
-void GUI_quit(void){
-    quit();
 }
 
 void GUI_setPixel(SDL_Surface * sur, int x, int y, Uint32 pixel){

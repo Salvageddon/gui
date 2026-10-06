@@ -8,4 +8,4 @@
 #include "gui_context_service.h"
 
 void bakeGui(GUI_context * context, SDL_PixelFormat format);
-void renderGUI(GUI_context * context, SDL_Surface * sur);
+void renderGui(GUI_context * context, SDL_Surface * sur);

@@ -12,6 +12,8 @@ typedef struct{
     SDL_Window * win;
     SDL_Surface * sur;
 
+    GUI_context * guiBase;
+
     int w, h;
 } GUI_window;
 
