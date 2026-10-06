@@ -1,6 +1,5 @@
 #include "../../include/gui.h"
-#include "../../include/gui_window_service.h"
-#include "../../include/gui_render_service.h"
+#include "../../include/gui_reader_service.h"
 #include <stdio.h>
 
 GUI_window * GUI_createWindow(char * title, int w, int h, Uint32 flags){

@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "gui_color_service.h"
+#include "gui_context_service.h"
 
 #include <SDL3/SDL.h>
 

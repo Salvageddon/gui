@@ -1,6 +1,6 @@
 /*
     Color conversion functions
-    Gluttony
+    Violence
 */
 
 #pragma once
