@@ -7,4 +7,4 @@
 
 #include "gui_render_service.h"
 
-void renderButton(SDL_Surface * sur, GUI_irect rect);
+void renderButton(SDL_Surface * sur, GUI_irect rect, int generation);

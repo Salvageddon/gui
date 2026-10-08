@@ -2,15 +2,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-GUI_context * createContext(int type){
+GUI_context * createContext(GUI_context * parent, int type){
     GUI_context * o = malloc(sizeof(GUI_context));
 
     o->type = type;
     o->controlRect = (GUI_irect){0, 0, 0, 0};
     o->bakeResult = NULL;
-    o->parent = NULL;
+    o->parent = parent;
     o->children = LST_createList();
     o->renderer = &renderButton;
+
+    if(parent){
+        o->generation = parent->generation + 1;
+        LST_add(&parent->children, o, &destroyContext);
+    }
+    else{
+        o->generation = 0;
+    }
 
     return o;
 }
