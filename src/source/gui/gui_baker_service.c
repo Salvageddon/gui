@@ -2,23 +2,44 @@
 #include <stdio.h>
 
 void sizeControl(GUI_context * context){
-    for(int i = 0; i < context->children.length; i++){
-        GUI_context * child = LST_get(context->children, i);
+    if(context->children.length > 0){
+        for(int i = 0; i < context->children.length; i++){
+            GUI_context * child = LST_get(context->children, i);
 
-        child->controlRect.w = 100;
-        child->controlRect.h = 50;
+            sizeControl(child);
+
+            context->controlRect.w += child->controlRect.w + 10;
+            context->controlRect.h = context->controlRect.h < child->controlRect.h ? child->controlRect.h : context->controlRect.h;
+        }
+
+        context->controlRect.w += 10;
+        context->controlRect.h += 20;
+    }
+    else{
+        context->controlRect.w = 100;
+        context->controlRect.h = 50;
     }
 }
 
 void positionControl(GUI_context * context){
     GUI_context * prevChild = NULL;
 
+    int xpos = 0, ypos = 0;
+
     for(int i = 0; i < context->children.length; i++){
         GUI_context * child = LST_get(context->children, i);
 
         child->controlRect.x += 10;
-        if(prevChild) child->controlRect.x += prevChild->controlRect.w + prevChild->controlRect.x;
-        child->controlRect.y = 10;
+        if(prevChild) child->controlRect.x += xpos;
+        child->controlRect.y += 10;
+
+        child->controlRect.x += context->controlRect.x;
+        child->controlRect.y += context->controlRect.y;
+
+        xpos += child->controlRect.w + 10;
+        ypos += child->controlRect.h;
+
+        positionControl(child);
 
         prevChild = child;
     }
@@ -31,7 +52,9 @@ void bakeControl(GUI_context * context, SDL_PixelFormat format){
         SDL_DestroySurface(child->bakeResult);
         child->bakeResult = SDL_CreateSurface(child->controlRect.w, child->controlRect.h, format);
 
-        if(child->renderer) child->renderer(child->bakeResult, child->controlRect);
+        if(child->renderer) child->renderer(child->bakeResult, child->controlRect, child->generation);
+
+        bakeControl(child, format);
     }
 }
 
@@ -56,10 +79,11 @@ void bakeResultToSurface(GUI_context * context, SDL_Surface * sur){
 
     for(int yy = y1; yy < y2; yy++){
         for(int xx = x1; xx < x2; xx++){
-            setPixel(sur, xx, yy, 0x0000FF);
+            setPixel(sur, xx, yy, getPixel(context->bakeResult, xBake, yBake));
             xBake++;
         }
 
+        xBake = 0;
         yBake++;
     }
 }
@@ -69,5 +93,6 @@ void renderGui(GUI_context * context, SDL_Surface * sur){
         GUI_context * child = LST_get(context->children, i);
 
         bakeResultToSurface(child, sur);
+        renderGui(child, sur);
     }
 }
