@@ -10,6 +10,7 @@ GUI_context * createContext(GUI_context * parent, int type){
     o->bakeResult = NULL;
     o->parent = parent;
     o->children = LST_createList();
+    o->attributes = HLS_createList();
     o->renderer = &renderButton;
 
     if(parent){
@@ -31,6 +32,7 @@ void destroyContext(void * context){
     }
 
     LST_clear(&ctx->children, 0);
+    HLS_clear(&ctx->attributes, 1);
     SDL_DestroySurface(ctx->bakeResult);
 
     free(context);
