@@ -5,7 +5,8 @@
 #pragma once
 
 enum GUI_controlTypes{
-    GUI_CONTROL_BUTTON = 0xA00000
+    GUI_CONTROL_BUTTON = 0xA00000,
+    GUI_CONTROL_LINEARVIEW
 };
 
 enum GUI_AttributeTypes{

@@ -9,3 +9,4 @@
 #include "gui_attribute_service.h"
 
 void renderButton(SDL_Surface * sur, GUI_irect rect, int generation);
+void renderLinearView(SDL_Surface * sur, GUI_irect rect, int generation);

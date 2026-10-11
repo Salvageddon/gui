@@ -9,7 +9,7 @@ int main(int argc, char * argv[]){
     GUI_init(SDL_INIT_VIDEO);
     win = GUI_createWindow(":3", 1280, 720, 0);
 
-    //should render 3 blue "buttons"
+    //red rectangles are linearViews, blue ones are buttons
     win->guiBase = GUI_readGUI("src/pub/interface.xml");
     GUI_bakeGUI(win->guiBase, win->sur->format);
 

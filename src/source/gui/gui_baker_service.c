@@ -3,17 +3,30 @@
 
 void sizeControl(GUI_context * context){
     if(context->children.length > 0){
+        int xmargin = 0, ymargin = 0;
+
         for(int i = 0; i < context->children.length; i++){
             GUI_context * child = LST_get(context->children, i);
 
             sizeControl(child);
 
-            context->controlRect.w += child->controlRect.w + 10;
-            context->controlRect.h = context->controlRect.h < child->controlRect.h ? child->controlRect.h : context->controlRect.h;
+            switch(getOrientation(context->attributes)){
+                case GUI_ORIENTATION_HORIZONTAL:
+                    context->controlRect.w += child->controlRect.w + 10;
+                    context->controlRect.h = context->controlRect.h < child->controlRect.h ? child->controlRect.h : context->controlRect.h;
+                    ymargin = 10;
+                break;
+
+                case GUI_ORIENTATION_VERTICAL:
+                    context->controlRect.h += child->controlRect.h + 10;
+                    context->controlRect.w = context->controlRect.w < child->controlRect.w ? child->controlRect.w : context->controlRect.w;
+                    xmargin = 10;
+                break;
+            }
         }
 
-        context->controlRect.w += 10;
-        context->controlRect.h += 20;
+        context->controlRect.w += 10 + xmargin;
+        context->controlRect.h += 10 + ymargin;
     }
     else{
         context->controlRect.w = 100;
@@ -24,20 +37,31 @@ void sizeControl(GUI_context * context){
 void positionControl(GUI_context * context){
     GUI_context * prevChild = NULL;
 
-    int xpos = 0, ypos = 0;
+    int xpos = 0, ypos = 0, xmargin = 0, ymargin = 0;
 
     for(int i = 0; i < context->children.length; i++){
         GUI_context * child = LST_get(context->children, i);
 
+        switch(getOrientation(context->attributes)){
+            case GUI_ORIENTATION_HORIZONTAL:
+                if(prevChild) child->controlRect.x += xpos;
+                xmargin = 10;
+            break;
+            
+            case GUI_ORIENTATION_VERTICAL:
+                if(prevChild) child->controlRect.y += ypos;
+                ymargin = 10;
+            break;
+        }
+        
         child->controlRect.x += 10;
-        if(prevChild) child->controlRect.x += xpos;
         child->controlRect.y += 10;
 
         child->controlRect.x += context->controlRect.x;
         child->controlRect.y += context->controlRect.y;
 
-        xpos += child->controlRect.w + 10;
-        ypos += child->controlRect.h;
+        xpos += child->controlRect.w + xmargin;
+        ypos += child->controlRect.h + ymargin;
 
         positionControl(child);
 

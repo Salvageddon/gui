@@ -37,7 +37,7 @@ Auto * typeAuto(Auto * o, int type, void * value, int stringLength){
 
 Auto * createAuto(int type, void * value, int stringLength){
     Auto * o = malloc(sizeof(Auto));
-    return typeAuto;
+    return typeAuto(o, type, value, stringLength);
 }
 
 Auto * changeAutoValue(Auto * au, int ntype, void * nvalue, int stringLength){

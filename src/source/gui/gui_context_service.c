@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+controlData controlDefinitions[CONTROLCOUNT] = {
+    {"button", GUI_CONTROL_BUTTON},
+    {"linearView", GUI_CONTROL_LINEARVIEW}
+};
+
 GUI_context * createContext(GUI_context * parent, int type){
     GUI_context * o = malloc(sizeof(GUI_context));
 
@@ -11,7 +16,22 @@ GUI_context * createContext(GUI_context * parent, int type){
     o->parent = parent;
     o->children = LST_createList();
     o->attributes = HLS_createList();
-    o->renderer = &renderButton;
+
+    switch(type){
+        case GUI_CONTROL_BUTTON:
+            o->renderer = &renderButton;
+            o->possibleAttributes = (possibleAttributes){buttonAttributes, BUTTON_ATTRCNT};
+        break;
+
+        case GUI_CONTROL_LINEARVIEW:
+            o->renderer = &renderLinearView;
+            o->possibleAttributes = (possibleAttributes){linearViewAttributes, LINEARVIEW_ATTRCNT};
+        break;
+
+        default:
+            free(o);
+        return NULL;
+    }
 
     if(parent){
         o->generation = parent->generation + 1;
@@ -36,4 +56,17 @@ void destroyContext(void * context){
     SDL_DestroySurface(ctx->bakeResult);
 
     free(context);
+}
+
+int getControlType(char * controlName){
+    int ret = -1;
+
+    for(int i = 0; i < ATTRCOUNT; i++){
+        if(!strcmp(controlDefinitions[i].name, controlName)){
+            ret = controlDefinitions[i].type;
+            break;
+        }
+    }
+
+    return ret;
 }

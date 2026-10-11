@@ -1,13 +1,41 @@
 #include "../../include/gui_reader_service.h"
 #include <salvagames/xmlReader.h>
 #include <stdio.h>
+#include <string.h>
+
+int readOrientation(char * value){
+    if(!strcmp(value, "horizontal")){
+        return GUI_ORIENTATION_HORIZONTAL;
+    }
+    else{
+        return GUI_ORIENTATION_VERTICAL;
+    }
+}
+
+void readAttributes(GUI_context * context, xmlElement * el){
+    for(int i = 0; i < el->attributes.length; i++){
+        xmlAttribute * attr = LST_get(el->attributes, i);
+
+        int attrType = findAttribute(attr->name);
+
+        switch(attrType){
+            case GUI_ATTRIBUTE_ORIENTATION:
+                int orientation = readOrientation(attr->value);
+                setAttribute(&context->attributes, attrType, &orientation, 0);
+            break;
+        }
+    }
+}
 
 void readChildren(GUI_context * context, xmlElement * el){
     for(int i = 0; i < el->elements.length; i++){
         xmlElement * xmlChild = LST_get(el->elements, i);
 
         if(xmlChild->type == XML_ELEMENT){
-            GUI_context * child = createContext(context, GUI_CONTROL_BUTTON);
+            GUI_context * child = createContext(context, getControlType(xmlChild->name));
+            if(!child) break;
+
+            readAttributes(child, xmlChild);
             readChildren(child, xmlChild);
         }
     }
@@ -22,6 +50,9 @@ GUI_context * readGui(const char * source){
 
     GUI_context * base = createContext(NULL, GUI_CONTROL_BUTTON);
     base->renderer = NULL;
+
+    int baseOrientation = GUI_ORIENTATION_HORIZONTAL;
+    setAttribute(&base->attributes, GUI_ATTRIBUTE_ORIENTATION, &baseOrientation, 0);
 
     readChildren(base, root);
 

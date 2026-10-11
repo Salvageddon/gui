@@ -8,3 +8,12 @@ void renderButton(SDL_Surface * sur, GUI_irect rect, int generation){
 
     fillRectNV(sur, 0, 0, rect.w, rect.h, mapRGB(color, SDL_GetPixelFormatDetails(sur->format)));
 }
+
+void renderLinearView(SDL_Surface * sur, GUI_irect rect, int generation){
+    GUI_rgb color;
+    color.r = 255 - generation * 20;
+    color.g = 0;
+    color.b = 0;
+
+    fillRectNV(sur, 0, 0, rect.w, rect.h, mapRGB(color, SDL_GetPixelFormatDetails(sur->format)));
+}
