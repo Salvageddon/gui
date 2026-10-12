@@ -3,8 +3,6 @@
 
 void sizeControl(GUI_context * context){
     if(context->children.length > 0){
-        int xmargin = 0, ymargin = 0;
-
         for(int i = 0; i < context->children.length; i++){
             GUI_context * child = LST_get(context->children, i);
 
@@ -12,56 +10,72 @@ void sizeControl(GUI_context * context){
 
             switch(getOrientation(context->attributes)){
                 case GUI_ORIENTATION_HORIZONTAL:
-                    context->controlRect.w += child->controlRect.w + 10;
-                    context->controlRect.h = context->controlRect.h < child->controlRect.h ? child->controlRect.h : context->controlRect.h;
-                    ymargin = 10;
+                    context->controlRect.w += child->marginRect.w;
+                    context->controlRect.h = context->controlRect.h < child->marginRect.h ? child->marginRect.h : context->controlRect.h;
                 break;
 
                 case GUI_ORIENTATION_VERTICAL:
-                    context->controlRect.h += child->controlRect.h + 10;
-                    context->controlRect.w = context->controlRect.w < child->controlRect.w ? child->controlRect.w : context->controlRect.w;
-                    xmargin = 10;
+                    context->controlRect.h += child->marginRect.h;
+                    context->controlRect.w = context->controlRect.w < child->marginRect.w ? child->marginRect.w : context->controlRect.w;
                 break;
             }
         }
-
-        context->controlRect.w += 10 + xmargin;
-        context->controlRect.h += 10 + ymargin;
     }
     else{
         context->controlRect.w = 100;
         context->controlRect.h = 50;
     }
+
+    Box padding = getPadding(context->attributes);
+    Box margin = getMargin(context->attributes);
+
+    context->paddingRect.w = context->controlRect.w + padding.left + padding.right;
+    context->paddingRect.h = context->controlRect.h + padding.top + padding.bottom;
+
+    context->marginRect.w = context->paddingRect.w + margin.left + margin.right;
+    context->marginRect.h = context->paddingRect.h + margin.top + margin.bottom;
 }
 
 void positionControl(GUI_context * context){
     GUI_context * prevChild = NULL;
 
-    int xpos = 0, ypos = 0, xmargin = 0, ymargin = 0;
+    int xpos = 0, ypos = 0;
 
     for(int i = 0; i < context->children.length; i++){
         GUI_context * child = LST_get(context->children, i);
 
+        Box childMargin = getMargin(child->attributes);
+        Box childPadding = getPadding(child->attributes);
+
+        child->marginRect.x += context->controlRect.x;
+        child->marginRect.y += context->controlRect.y;
+
+        child->paddingRect.x += child->marginRect.x + childMargin.left;
+        child->paddingRect.y += child->marginRect.y + childMargin.top;
+
+        child->controlRect.x += child->paddingRect.x + childPadding.left;
+        child->controlRect.y += child->paddingRect.y + childPadding.top;
+
         switch(getOrientation(context->attributes)){
             case GUI_ORIENTATION_HORIZONTAL:
-                if(prevChild) child->controlRect.x += xpos;
-                xmargin = 10;
+                if(prevChild){
+                    child->controlRect.x += xpos;
+                    child->paddingRect.x += xpos;
+                    child->marginRect.x += xpos;
+                }
             break;
             
             case GUI_ORIENTATION_VERTICAL:
-                if(prevChild) child->controlRect.y += ypos;
-                ymargin = 10;
+                if(prevChild){
+                    child->controlRect.y += ypos;
+                    child->paddingRect.y += ypos;
+                    child->marginRect.y += ypos;
+                }
             break;
         }
-        
-        child->controlRect.x += 10;
-        child->controlRect.y += 10;
 
-        child->controlRect.x += context->controlRect.x;
-        child->controlRect.y += context->controlRect.y;
-
-        xpos += child->controlRect.w + xmargin;
-        ypos += child->controlRect.h + ymargin;
+        xpos += child->marginRect.w;
+        ypos += child->marginRect.h;
 
         positionControl(child);
 
@@ -74,9 +88,9 @@ void bakeControl(GUI_context * context, SDL_PixelFormat format){
         GUI_context * child = LST_get(context->children, i);
 
         SDL_DestroySurface(child->bakeResult);
-        child->bakeResult = SDL_CreateSurface(child->controlRect.w, child->controlRect.h, format);
+        child->bakeResult = SDL_CreateSurface(child->paddingRect.w, child->paddingRect.h, format);
 
-        if(child->renderer) child->renderer(child->bakeResult, child->controlRect, child->generation);
+        if(child->renderer) child->renderer(child->bakeResult, child->paddingRect, child->generation);
 
         bakeControl(child, format);
     }
@@ -89,11 +103,11 @@ void bakeGui(GUI_context * context, SDL_PixelFormat format){
 }
 
 void bakeResultToSurface(GUI_context * context, SDL_Surface * sur){
-    int x1 = context->controlRect.x < 0 ? 0 : context->controlRect.x;
-    int y1 = context->controlRect.y < 0 ? 0 : context->controlRect.y;
+    int x1 = context->paddingRect.x < 0 ? 0 : context->paddingRect.x;
+    int y1 = context->paddingRect.y < 0 ? 0 : context->paddingRect.y;
     
-    int x2 = context->controlRect.x + context->controlRect.w;
-    int y2 = context->controlRect.y + context->controlRect.h;
+    int x2 = context->paddingRect.x + context->paddingRect.w;
+    int y2 = context->paddingRect.y + context->paddingRect.h;
 
     x2 = x2 >= sur->w ? sur->w : x2;
     y2 = y2 >= sur->h ? sur->h : y2;

@@ -1,43 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<linearView orientation="vertical">
-    <button></button>
-    <button></button>
-    <button></button>
-</linearView>
-
-<linearView orientation="horizontal">
-    <button></button>
-    <button></button>
-    <button></button>
-    <linearView orientation="vertical">
-        <linearView orientation="horizontal">
-            <button></button>
-            <button></button>
-            <button></button>
-        </linearView>
-
-        <linearView orientation="horizontal">
-            <button></button>
-            <button></button>
-            <button></button>
-        </linearView>
-
-        <linearView orientation="horizontal">
-            <button></button>
-            <button></button>
-            <button></button>
-        </linearView>
-
-        <linearView orientation="horizontal">
-            <button></button>
-            <button></button>
-            <button></button>
-        </linearView>
-
-        <linearView orientation="horizontal">
-            <button></button>
-            <button></button>
-            <button></button>
-        </linearView>
-    </linearView>
+<linearView orientation="horizontal" margin="10" padding="10 20">
+    <button margin="10"></button>
+    <button margin="10" padding="5 10 15 20"></button>
+    <button margin="10"></button>
 </linearView>

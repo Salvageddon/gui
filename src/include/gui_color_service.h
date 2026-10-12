@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "gui_utility_service.h"
+
 #include "gui_types.h"
 
 GUI_rgb getRGB(Uint32 color, const SDL_PixelFormatDetails * formatDetails);

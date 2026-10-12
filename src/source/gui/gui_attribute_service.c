@@ -4,10 +4,13 @@ attributeData attributeDefinitions[ATTRCOUNT] = {
     {"orientation", GUI_ATTRIBUTE_ORIENTATION, AUTO_INT},
     {"width", GUI_ATTRIBUTE_WIDTH, AUTO_INT},
     {"height", GUI_ATTRIBUTE_HEIGHT, AUTO_INT},
+    {"margin", GUI_ATTRIBUTE_MARGIN, AUTO_BOX},
+    {"padding", GUI_ATTRIBUTE_PADDING, AUTO_BOX}
 };
 
-char buttonAttributes[2] = {1, 2};
-char linearViewAttributes[3] = {0, 1, 2};
+char viewAttributes[VIEW_ATTRCNT] = {1, 2, 3, 4};
+char buttonAttributes[BUTTON_ATTRCNT] = {1, 2, 3, 4};
+char linearViewAttributes[LINEARVIEW_ATTRCNT] = {0, 1, 2, 3, 4};
 
 int findAutoType(int attrType){
     int ret = -1;
@@ -68,4 +71,16 @@ int getHeight(Hashlist attributes){
     Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_HEIGHT);
     if(!au) return -1;
     else return getInt(au);
+}
+
+Box getMargin(Hashlist attributes){
+    Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_MARGIN);
+    if(!au) return (Box){0, 0, 0, 0};
+    else return getBox(au);
+}
+
+Box getPadding(Hashlist attributes){
+    Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_PADDING);
+    if(!au) return (Box){0, 0, 0, 0};
+    else return getBox(au);
 }

@@ -14,7 +14,7 @@
 
 typedef struct GUI_CONTEXT{
     int type, generation;
-    GUI_irect controlRect;
+    GUI_irect controlRect, paddingRect, marginRect;
     SDL_Surface * bakeResult;
     GUI_context * parent;
     List children;

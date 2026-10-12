@@ -26,6 +26,11 @@ Auto * typeAuto(Auto * o, int type, void * value, int stringLength){
             o->value = value;
         break;
 
+        case AUTO_BOX:
+            o->value = malloc(sizeof(Box));
+            *((Box*)o->value) = *((Box*)value);
+        break;
+
         default:
             free(o);
             o = NULL;
@@ -59,6 +64,10 @@ Uint32 getHex(Auto * au){
 
 char * getString(Auto * au){
     return au->value;
+}
+
+Box getBox(Auto * au){
+    return *((Box*)au->value);
 }
 
 void destroyAuto(void * au){

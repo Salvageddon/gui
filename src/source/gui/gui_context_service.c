@@ -12,6 +12,8 @@ GUI_context * createContext(GUI_context * parent, int type){
 
     o->type = type;
     o->controlRect = (GUI_irect){0, 0, 0, 0};
+    o->paddingRect = (GUI_irect){0, 0, 0, 0};
+    o->marginRect = (GUI_irect){0, 0, 0, 0};
     o->bakeResult = NULL;
     o->parent = parent;
     o->children = LST_createList();
