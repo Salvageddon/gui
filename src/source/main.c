@@ -10,7 +10,7 @@ int main(int argc, char * argv[]){
     win = GUI_createWindow(":3", 1280, 720, 0);
 
     //red rectangles are linearViews, blue ones are buttons
-    win->guiBase = GUI_readGUI("src/pub/interface.xml");
+    win->guiBase = GUI_readGUI("src/pub/interface.xml", win->sur);
     GUI_bakeGUI(win->guiBase, win->sur->format);
 
     int loop = 1;

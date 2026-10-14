@@ -11,9 +11,11 @@ GUI_context * createContext(GUI_context * parent, int type){
     GUI_context * o = malloc(sizeof(GUI_context));
 
     o->type = type;
+    o->renderData = (RenderData){0, 0, 0, 0, 1};
     o->controlRect = (GUI_irect){0, 0, 0, 0};
     o->paddingRect = (GUI_irect){0, 0, 0, 0};
     o->marginRect = (GUI_irect){0, 0, 0, 0};
+    o->contentRect = (GUI_irect){0, 0, 0, 0};
     o->bakeResult = NULL;
     o->parent = parent;
     o->children = LST_createList();
@@ -38,9 +40,11 @@ GUI_context * createContext(GUI_context * parent, int type){
     if(parent){
         o->generation = parent->generation + 1;
         LST_add(&parent->children, o, &destroyContext);
+        o->target = parent->target;
     }
     else{
         o->generation = 0;
+        o->target = NULL;
     }
 
     return o;

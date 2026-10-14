@@ -57,6 +57,18 @@ Box readBox(char * value){
     return o;
 }
 
+int readSize(char * value){
+    if(!strcmp(value, "size-min")){
+        return GUI_SIZE_MIN;
+    }
+    else if(!strcmp(value, "size-max")){
+        return GUI_SIZE_MAX;
+    }
+    else{
+        return stringToInt(value);
+    }
+}
+
 void readAttributes(GUI_context * context, xmlElement * el){
     for(int i = 0; i < el->attributes.length; i++){
         xmlAttribute * attr = LST_get(el->attributes, i);
@@ -67,6 +79,12 @@ void readAttributes(GUI_context * context, xmlElement * el){
             case GUI_ATTRIBUTE_ORIENTATION:
                 int orientation = readOrientation(attr->value);
                 setAttribute(&context->attributes, attrType, &orientation, 0);
+            break;
+
+            case GUI_ATTRIBUTE_WIDTH:
+            case GUI_ATTRIBUTE_HEIGHT:
+                int size = readSize(attr->value);
+                setAttribute(&context->attributes, attrType, &size, 0);
             break;
 
             case GUI_ATTRIBUTE_MARGIN:
@@ -92,7 +110,7 @@ void readChildren(GUI_context * context, xmlElement * el){
     }
 }
 
-GUI_context * readGui(const char * source){
+GUI_context * readGui(const char * source, SDL_Surface * sur){
     xmlElement * root = XML_read(source);
     
     if(!root){
@@ -101,9 +119,14 @@ GUI_context * readGui(const char * source){
 
     GUI_context * base = createContext(NULL, GUI_CONTROL_BUTTON);
     base->renderer = NULL;
+    base->target = sur;
 
-    int baseOrientation = GUI_ORIENTATION_HORIZONTAL;
+    int baseOrientation = GUI_ORIENTATION_HORIZONTAL, 
+        baseSize = GUI_SIZE_MAX;
+
     setAttribute(&base->attributes, GUI_ATTRIBUTE_ORIENTATION, &baseOrientation, 0);
+    setAttribute(&base->attributes, GUI_ATTRIBUTE_WIDTH, &baseSize, 0);
+    setAttribute(&base->attributes, GUI_ATTRIBUTE_HEIGHT, &baseSize, 0);
 
     readChildren(base, root);
 

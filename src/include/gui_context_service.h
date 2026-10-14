@@ -12,10 +12,19 @@
 
 #define CONTROLCOUNT 2
 
+typedef struct{
+    char allowWidthGrow,
+        allowHeightGrow,
+        allowHorizontalBoxes,
+        allowVerticalBoxes,
+        renderable;
+} RenderData;
+
 typedef struct GUI_CONTEXT{
     int type, generation;
-    GUI_irect controlRect, paddingRect, marginRect;
-    SDL_Surface * bakeResult;
+    RenderData renderData;
+    GUI_irect controlRect, paddingRect, marginRect, contentRect;
+    SDL_Surface * bakeResult, * target;
     GUI_context * parent;
     List children;
     Hashlist attributes;

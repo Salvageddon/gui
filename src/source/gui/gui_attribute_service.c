@@ -57,19 +57,19 @@ void unsetAttribute(Hashlist * attributes, int attrType){
 
 int getOrientation(Hashlist attributes){
     Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_ORIENTATION);
-    if(!au) return -1;
+    if(!au) return GUI_ORIENTATION_VERTICAL;
     else return getInt(au);
 }
 
 int getWidth(Hashlist attributes){
     Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_WIDTH);
-    if(!au) return -1;
+    if(!au) return GUI_SIZE_MIN;
     else return getInt(au);
 }
 
 int getHeight(Hashlist attributes){
     Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_HEIGHT);
-    if(!au) return -1;
+    if(!au) return GUI_SIZE_MIN;
     else return getInt(au);
 }
 

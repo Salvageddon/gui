@@ -1,39 +1,178 @@
 #include "../../include/gui_baker_service.h"
 #include <stdio.h>
 
-void sizeControl(GUI_context * context){
-    if(context->children.length > 0){
-        for(int i = 0; i < context->children.length; i++){
-            GUI_context * child = LST_get(context->children, i);
+int stretchParentsWidth(GUI_context * context){
+    if(context->parent){
+        int parentWidthAttr = getWidth(context->parent->attributes);
 
-            sizeControl(child);
+        if(parentWidthAttr == GUI_SIZE_MIN){
+            int parentWidth = stretchParentsWidth(context->parent);
 
-            switch(getOrientation(context->attributes)){
-                case GUI_ORIENTATION_HORIZONTAL:
-                    context->controlRect.w += child->marginRect.w;
-                    context->controlRect.h = context->controlRect.h < child->marginRect.h ? child->marginRect.h : context->controlRect.h;
-                break;
+            Box margin = getMargin(context->parent->attributes);
+            Box padding = getPadding(context->parent->attributes);
 
-                case GUI_ORIENTATION_VERTICAL:
-                    context->controlRect.h += child->marginRect.h;
-                    context->controlRect.w = context->controlRect.w < child->marginRect.w ? child->marginRect.w : context->controlRect.w;
-                break;
-            }
+            int paddingMargin = margin.left + margin.right + padding.left + padding.right;
+            int wdiff = parentWidth - paddingMargin - context->parent->controlRect.w;
+
+            context->parent->controlRect.w += wdiff;
+            context->parent->paddingRect.w += wdiff;
+            context->parent->marginRect.w += wdiff;
+            context->parent->contentRect.w += wdiff;
+
+            context->parent->renderData.allowWidthGrow = 0;
+            context->parent->renderData.allowHorizontalBoxes = 1;
+
+            return parentWidth - paddingMargin;
+        }
+        else{
+            return context->parent->controlRect.w;
         }
     }
     else{
-        context->controlRect.w = 100;
-        context->controlRect.h = 50;
+        return context->target->w;
     }
+}
+
+int stretchParentsHeight(GUI_context * context){
+    if(context->parent){
+        int parentHeightAttr = getHeight(context->parent->attributes);
+
+        if(parentHeightAttr == GUI_SIZE_MIN){
+            int parentHeight = stretchParentsHeight(context->parent);
+
+            Box margin = getMargin(context->parent->attributes);
+            Box padding = getPadding(context->parent->attributes);
+
+            int paddingMargin = margin.top + margin.bottom + padding.top + padding.bottom;
+            int hdiff = parentHeight - paddingMargin - context->parent->controlRect.h;
+
+            context->parent->controlRect.h += hdiff;
+            context->parent->paddingRect.h += hdiff;
+            context->parent->marginRect.h += hdiff;
+            context->parent->contentRect.h += hdiff;
+
+            context->parent->renderData.allowHeightGrow = 0;
+            context->parent->renderData.allowVerticalBoxes = 1;
+
+            return parentHeight - paddingMargin;
+        }
+        else{
+            return context->parent->controlRect.h;
+        }
+    }
+    else{
+        return context->target->h;
+    }
+}
+
+void sizeControl(GUI_context * context){
+    int width = getWidth(context->attributes);
+    int height = getHeight(context->attributes);
 
     Box padding = getPadding(context->attributes);
     Box margin = getMargin(context->attributes);
 
-    context->paddingRect.w = context->controlRect.w + padding.left + padding.right;
-    context->paddingRect.h = context->controlRect.h + padding.top + padding.bottom;
+    switch(width){
+        case GUI_SIZE_MIN:
+            context->renderData.allowWidthGrow = 1;
+            context->renderData.allowHorizontalBoxes = 1;
+        break;
 
-    context->marginRect.w = context->paddingRect.w + margin.left + margin.right;
-    context->marginRect.h = context->paddingRect.h + margin.top + margin.bottom;
+        case GUI_SIZE_MAX:
+            context->marginRect.w = stretchParentsWidth(context);
+            context->paddingRect.w = context->marginRect.w - margin.left - margin.right;
+            context->controlRect.w = context->paddingRect.w - padding.left - padding.right;
+
+            context->renderData.allowWidthGrow = 0;
+            context->renderData.allowHorizontalBoxes = 0;
+        break;
+
+        default:
+            context->controlRect.w = width;
+            context->renderData.allowWidthGrow = 1;
+            context->renderData.allowHorizontalBoxes = 1;
+    }
+
+    switch(height){
+        case GUI_SIZE_MIN:
+            context->renderData.allowHeightGrow = 1;
+            context->renderData.allowVerticalBoxes = 1;
+        break;
+
+        case GUI_SIZE_MAX:
+            context->marginRect.h = stretchParentsHeight(context);
+            context->paddingRect.h = context->marginRect.h - margin.top - margin.bottom;
+            context->controlRect.h = context->paddingRect.h - padding.top - padding.bottom;
+
+            context->renderData.allowHeightGrow = 0;
+            context->renderData.allowVerticalBoxes = 0;
+        break;
+
+        default:
+            context->controlRect.h = height;
+            context->renderData.allowHeightGrow = 1;
+            context->renderData.allowVerticalBoxes = 1;
+    }
+
+    for(int i = 0; i < context->children.length; i++){
+        GUI_context * child = LST_get(context->children, i);
+
+        sizeControl(child);
+
+        switch(getOrientation(context->attributes)){
+            case GUI_ORIENTATION_HORIZONTAL:
+                if(context->renderData.allowWidthGrow){
+                    int stretchedWidth = context->contentRect.w + child->marginRect.w;
+                    
+                    if(context->controlRect.w < stretchedWidth){
+                        context->controlRect.w = stretchedWidth;   
+                    }
+
+                    context->contentRect.w = stretchedWidth;
+                }
+
+                if(context->renderData.allowHeightGrow){
+                    if(context->controlRect.h < child->marginRect.h){
+                        context->controlRect.h = child->marginRect.h;
+                        context->contentRect.h = child->marginRect.h;
+                    }
+                }
+            break;
+
+            case GUI_ORIENTATION_VERTICAL:
+                if(context->renderData.allowHeightGrow){
+                    int stretchedHeight = context->contentRect.h + child->marginRect.h;
+                    
+                    if(context->controlRect.h < stretchedHeight){
+                        context->controlRect.h = stretchedHeight;   
+                    }
+
+                    context->contentRect.h = stretchedHeight;
+                }
+
+                if(context->renderData.allowWidthGrow){
+                    if(context->controlRect.w < child->marginRect.w){
+                        context->controlRect.w = child->marginRect.w;
+                        context->contentRect.w = child->marginRect.w;
+                    }
+                }
+            break;
+        }
+    }
+
+    if(context->renderData.allowHorizontalBoxes){
+        context->paddingRect.w = context->controlRect.w + padding.left + padding.right;
+        context->marginRect.w = context->paddingRect.w + margin.left + margin.right;
+    }
+
+    if(context->renderData.allowVerticalBoxes){
+        context->paddingRect.h = context->controlRect.h + padding.top + padding.bottom;
+        context->marginRect.h = context->paddingRect.h + margin.top + margin.bottom;
+    }
+
+    if(context->paddingRect.w <= 0 || context->paddingRect.h <= 0){
+        context->renderData.renderable = 0;
+    }
 }
 
 void positionControl(GUI_context * context){
@@ -88,11 +227,13 @@ void bakeControl(GUI_context * context, SDL_PixelFormat format){
         GUI_context * child = LST_get(context->children, i);
 
         SDL_DestroySurface(child->bakeResult);
-        child->bakeResult = SDL_CreateSurface(child->paddingRect.w, child->paddingRect.h, format);
+        
+        if(child->renderData.renderable){
+            child->bakeResult = SDL_CreateSurface(child->paddingRect.w, child->paddingRect.h, format);
+            if(child->renderer) child->renderer(child->bakeResult, child->paddingRect, child->generation);
 
-        if(child->renderer) child->renderer(child->bakeResult, child->paddingRect, child->generation);
-
-        bakeControl(child, format);
+            bakeControl(child, format);
+        }
     }
 }
 
@@ -130,7 +271,7 @@ void renderGui(GUI_context * context, SDL_Surface * sur){
     for(int i = 0; i < context->children.length; i++){
         GUI_context * child = LST_get(context->children, i);
 
-        bakeResultToSurface(child, sur);
+        if(child->renderData.renderable) bakeResultToSurface(child, sur);
         renderGui(child, sur);
     }
 }

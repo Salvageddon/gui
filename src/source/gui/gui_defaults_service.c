@@ -1,4 +1,5 @@
 #include "../../include/gui_defaults_service.h"
+#include <stdio.h>
 
 void renderButton(SDL_Surface * sur, GUI_irect rect, int generation){
     GUI_rgb color;

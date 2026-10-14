@@ -2,13 +2,18 @@
 #include "../../include/gui_reader_service.h"
 #include <stdio.h>
 
-GUI_context * GUI_readGUI(const char * source){
+GUI_context * GUI_readGUI(const char * source, SDL_Surface * sur){
     if(!source){
         printf("GUI (readGUI()): Source cannot be NULL.\n");
         return NULL;
     }
 
-    return readGui(source);
+    if(!sur){
+        printf("GUI (readGUI()): Surface cannot be NULL.\n");
+        return NULL;
+    }
+
+    return readGui(source, sur);
 }
 
 GUI_window * GUI_createWindow(char * title, int w, int h, Uint32 flags){

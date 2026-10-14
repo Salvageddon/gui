@@ -21,7 +21,7 @@ typedef struct{
 } Auto;
 
 typedef struct{
-    char left, top, right, bottom;
+    int left, top, right, bottom;
 } Box;
 
 Auto * createAuto(int type, void * value, int stringLength);
