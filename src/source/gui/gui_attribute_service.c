@@ -5,12 +5,13 @@ attributeData attributeDefinitions[ATTRCOUNT] = {
     {"width", GUI_ATTRIBUTE_WIDTH, AUTO_INT},
     {"height", GUI_ATTRIBUTE_HEIGHT, AUTO_INT},
     {"margin", GUI_ATTRIBUTE_MARGIN, AUTO_BOX},
-    {"padding", GUI_ATTRIBUTE_PADDING, AUTO_BOX}
+    {"padding", GUI_ATTRIBUTE_PADDING, AUTO_BOX},
+    {"item-alignment", GUI_ATTRIBUTE_ITEM_ALIGNMENT, AUTO_ALIGNMENT}
 };
 
 char viewAttributes[VIEW_ATTRCNT] = {1, 2, 3, 4};
 char buttonAttributes[BUTTON_ATTRCNT] = {1, 2, 3, 4};
-char linearViewAttributes[LINEARVIEW_ATTRCNT] = {0, 1, 2, 3, 4};
+char linearViewAttributes[LINEARVIEW_ATTRCNT] = {0, 1, 2, 3, 4, 5};
 
 int findAutoType(int attrType){
     int ret = -1;
@@ -83,4 +84,10 @@ Box getPadding(Hashlist attributes){
     Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_PADDING);
     if(!au) return (Box){0, 0, 0, 0};
     else return getBox(au);
+}
+
+Alignment getItemAlignment(Hashlist attributes){
+    Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_ITEM_ALIGNMENT);
+    if(!au) return (Alignment){GUI_ALIGNMENT_START, GUI_ALIGNMENT_START};
+    else return getAlignment(au);
 }

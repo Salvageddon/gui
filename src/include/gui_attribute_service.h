@@ -10,10 +10,10 @@
 #include "gui_enums.h"
 #include <salvagames/hashlist.h>
 
-#define ATTRCOUNT 5
+#define ATTRCOUNT 6
 #define VIEW_ATTRCNT 4
 #define BUTTON_ATTRCNT 4
-#define LINEARVIEW_ATTRCNT 5
+#define LINEARVIEW_ATTRCNT 6
 
 typedef struct{
     char * name;
@@ -40,3 +40,4 @@ int getWidth(Hashlist attributes);
 int getHeight(Hashlist attributes);
 Box getMargin(Hashlist attributes);
 Box getPadding(Hashlist attributes);
+Alignment getItemAlignment(Hashlist attributes);

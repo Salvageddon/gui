@@ -12,7 +12,8 @@ enum AutoTypes{
     AUTO_FLOAT,
     AUTO_HEX,
     AUTO_STRING,
-    AUTO_BOX
+    AUTO_BOX,
+    AUTO_ALIGNMENT
 };
 
 typedef struct{
@@ -24,6 +25,10 @@ typedef struct{
     int left, top, right, bottom;
 } Box;
 
+typedef struct{
+    int horizontal, vertical;
+} Alignment;
+
 Auto * createAuto(int type, void * value, int stringLength);
 Auto * changeAutoValue(Auto * au, int ntype, void * nvalue, int stringLength);
 int getInt(Auto * au);
@@ -31,4 +36,5 @@ float getFloat(Auto * au);
 Uint32 getHex(Auto * au);
 char * getString(Auto * au);
 Box getBox(Auto * au);
+Alignment getAlignment(Auto * au);
 void destroyAuto(void * au);

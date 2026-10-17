@@ -121,39 +121,39 @@ void sizeControl(GUI_context * context){
 
         switch(getOrientation(context->attributes)){
             case GUI_ORIENTATION_HORIZONTAL:
+                int stretchedWidth = context->contentRect.w + child->marginRect.w;
+                context->contentRect.w = stretchedWidth;
+
                 if(context->renderData.allowWidthGrow){
-                    int stretchedWidth = context->contentRect.w + child->marginRect.w;
-                    
                     if(context->controlRect.w < stretchedWidth){
                         context->controlRect.w = stretchedWidth;   
                     }
-
-                    context->contentRect.w = stretchedWidth;
                 }
 
-                if(context->renderData.allowHeightGrow){
-                    if(context->controlRect.h < child->marginRect.h){
+                if(context->controlRect.h < child->marginRect.h){
+                    context->contentRect.h = child->marginRect.h;
+
+                    if(context->renderData.allowHeightGrow){
                         context->controlRect.h = child->marginRect.h;
-                        context->contentRect.h = child->marginRect.h;
                     }
                 }
             break;
 
             case GUI_ORIENTATION_VERTICAL:
+                int stretchedHeight = context->contentRect.h + child->marginRect.h;
+                context->contentRect.h = stretchedHeight;
+
                 if(context->renderData.allowHeightGrow){
-                    int stretchedHeight = context->contentRect.h + child->marginRect.h;
-                    
                     if(context->controlRect.h < stretchedHeight){
                         context->controlRect.h = stretchedHeight;   
                     }
-
-                    context->contentRect.h = stretchedHeight;
                 }
 
-                if(context->renderData.allowWidthGrow){
-                    if(context->controlRect.w < child->marginRect.w){
+                if(context->controlRect.w < child->marginRect.w){
+                    context->contentRect.w = child->marginRect.w;
+
+                    if(context->renderData.allowWidthGrow){
                         context->controlRect.w = child->marginRect.w;
-                        context->contentRect.w = child->marginRect.w;
                     }
                 }
             break;
@@ -175,10 +175,34 @@ void sizeControl(GUI_context * context){
     }
 }
 
-void positionControl(GUI_context * context){
+void positionControl(GUI_context * context);
+
+void positionHorizontally(GUI_context * context){
     GUI_context * prevChild = NULL;
 
-    int xpos = 0, ypos = 0;
+    int xpos = 0, ypos = 0, xAlign = 0, yAlign = 0, xOff = 0, yOff = 0;
+    Alignment alignment = getItemAlignment(context->attributes);
+
+    switch(alignment.horizontal){
+        case GUI_ALIGNMENT_CENTER:
+            xAlign = (context->controlRect.w - context->contentRect.w) / 2;
+        break;
+
+        case GUI_ALIGNMENT_END:
+            xAlign = context->controlRect.w - context->contentRect.w;
+        break;
+
+        case GUI_ALIGNMENT_STRETCH_BETWEEN:
+            int count = context->children.length - 1;
+            if(count) xOff = (context->controlRect.w - context->contentRect.w) / count;
+        break;
+
+        case GUI_ALIGNMENT_STRETCH_AROUND:
+            count = context->children.length + 1;
+            if(count) xAlign = (context->controlRect.w - context->contentRect.w) / count;
+            xOff = xAlign;
+        break;
+    }
 
     for(int i = 0; i < context->children.length; i++){
         GUI_context * child = LST_get(context->children, i);
@@ -186,8 +210,29 @@ void positionControl(GUI_context * context){
         Box childMargin = getMargin(child->attributes);
         Box childPadding = getPadding(child->attributes);
 
-        child->marginRect.x += context->controlRect.x;
-        child->marginRect.y += context->controlRect.y;
+        switch(alignment.vertical){
+            case GUI_ALIGNMENT_CENTER:
+                yAlign = (context->controlRect.h - child->marginRect.h) / 2;
+            break;
+
+            case GUI_ALIGNMENT_END:
+                yAlign = context->controlRect.h - child->marginRect.h;
+            break;
+
+            case GUI_ALIGNMENT_STRETCH_BETWEEN:
+                int count = context->children.length - 1;
+                if(count) yOff = (context->controlRect.h - child->marginRect.h) / count;
+            break;
+
+            case GUI_ALIGNMENT_STRETCH_AROUND:
+                count = context->children.length + 1;
+                if(count) yAlign = (context->controlRect.h - child->marginRect.h) / count;
+                yOff = yAlign;
+            break;
+        }
+
+        child->marginRect.x += context->controlRect.x + xAlign;
+        child->marginRect.y += context->controlRect.y + yAlign;
 
         child->paddingRect.x += child->marginRect.x + childMargin.left;
         child->paddingRect.y += child->marginRect.y + childMargin.top;
@@ -195,30 +240,115 @@ void positionControl(GUI_context * context){
         child->controlRect.x += child->paddingRect.x + childPadding.left;
         child->controlRect.y += child->paddingRect.y + childPadding.top;
 
-        switch(getOrientation(context->attributes)){
-            case GUI_ORIENTATION_HORIZONTAL:
-                if(prevChild){
-                    child->controlRect.x += xpos;
-                    child->paddingRect.x += xpos;
-                    child->marginRect.x += xpos;
-                }
-            break;
-            
-            case GUI_ORIENTATION_VERTICAL:
-                if(prevChild){
-                    child->controlRect.y += ypos;
-                    child->paddingRect.y += ypos;
-                    child->marginRect.y += ypos;
-                }
-            break;
+        if(prevChild){
+            child->controlRect.x += xpos;
+            child->paddingRect.x += xpos;
+            child->marginRect.x += xpos;
         }
 
-        xpos += child->marginRect.w;
-        ypos += child->marginRect.h;
+        if(i == context->children.length - 1){
+            xOff = 0;
+            yOff = 0;
+        }
+
+        xpos += child->marginRect.w + xOff;
+        ypos += child->marginRect.h + yOff;
 
         positionControl(child);
 
         prevChild = child;
+    }
+}
+
+void positionVertically(GUI_context * context){
+    GUI_context * prevChild = NULL;
+
+    int xpos = 0, ypos = 0, xAlign = 0, yAlign = 0, xOff = 0, yOff = 0;
+    Alignment alignment = getItemAlignment(context->attributes);
+
+    switch(alignment.vertical){
+        case GUI_ALIGNMENT_CENTER:
+            yAlign = (context->controlRect.h - context->contentRect.h) / 2;
+        break;
+
+        case GUI_ALIGNMENT_END:
+            yAlign = context->controlRect.h - context->contentRect.h;
+        break;
+
+        case GUI_ALIGNMENT_STRETCH_BETWEEN:
+            int count = context->children.length - 1;
+            if(count) yOff = (context->controlRect.h - context->contentRect.h) / count;
+        break;
+
+        case GUI_ALIGNMENT_STRETCH_AROUND:
+            count = context->children.length + 1;
+            if(count) yAlign = (context->controlRect.h - context->contentRect.h) / count;
+            yOff = yAlign;
+        break;
+    }
+
+    for(int i = 0; i < context->children.length; i++){
+        GUI_context * child = LST_get(context->children, i);
+
+        Box childMargin = getMargin(child->attributes);
+        Box childPadding = getPadding(child->attributes);
+
+        switch(alignment.horizontal){
+            case GUI_ALIGNMENT_CENTER:
+                xAlign = (context->controlRect.w - child->marginRect.w) / 2;
+            break;
+
+            case GUI_ALIGNMENT_END:
+                xAlign = context->controlRect.w - child->marginRect.w;
+            break;
+
+            case GUI_ALIGNMENT_STRETCH_BETWEEN:
+                int count = context->children.length - 1;
+                if(count) xOff = (context->controlRect.w - child->marginRect.w) / count;
+            break;
+
+            case GUI_ALIGNMENT_STRETCH_AROUND:
+                count = context->children.length + 1;
+                if(count) xAlign = (context->controlRect.w - child->marginRect.w) / count;
+                xOff = xAlign;
+            break;
+        }
+
+        child->marginRect.x += context->controlRect.x + xAlign;
+        child->marginRect.y += context->controlRect.y + yAlign;
+
+        child->paddingRect.x += child->marginRect.x + childMargin.left;
+        child->paddingRect.y += child->marginRect.y + childMargin.top;
+
+        child->controlRect.x += child->paddingRect.x + childPadding.left;
+        child->controlRect.y += child->paddingRect.y + childPadding.top;
+
+        if(prevChild){
+            child->controlRect.y += ypos;
+            child->paddingRect.y += ypos;
+            child->marginRect.y += ypos;
+        }
+
+        if(i == context->children.length - 1){
+            xOff = 0;
+            yOff = 0;
+        }
+
+        xpos += child->marginRect.w + xOff;
+        ypos += child->marginRect.h + yOff;
+
+        positionControl(child);
+
+        prevChild = child;
+    }
+}
+
+void positionControl(GUI_context * context){
+    int orientation = getOrientation(context->attributes);
+
+    switch(orientation){
+        case GUI_ORIENTATION_VERTICAL: positionVertically(context); break;
+        default: positionHorizontally(context);
     }
 }
 

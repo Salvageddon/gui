@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <linearView orientation="vertical" 
             margin="10" 
-            padding="10 100"
-            width="size-min"
-            height="size-min">
+            padding="10 20"
+            width="size-max"
+            height="size-max"
+            item-alignment="stretch-between center">
     <button margin="10" width="100" height="100"></button>
-    <button margin="10" width="size-max" height="100"></button>
+    <button margin="10" width="500" height="200"></button>
+    <button margin="10" width="200" height="150"></button>
 </linearView>

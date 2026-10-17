@@ -69,6 +69,46 @@ int readSize(char * value){
     }
 }
 
+Alignment readAligment(char * value){
+    Alignment o;
+
+    List tokens = tokenize(value);
+
+    if(tokens.length == 2){
+        int alignment[2];
+
+        for(int i = 0; i < 2; i++){
+            char * token = LST_get(tokens, i);
+
+            if(!strcmp("center", token)){
+                alignment[i] = GUI_ALIGNMENT_CENTER;
+            }
+            else if(!strcmp("end", token)){
+                alignment[i] = GUI_ALIGNMENT_END;
+            }
+            else if(!strcmp("stretch-between", token)){
+                alignment[i] = GUI_ALIGNMENT_STRETCH_BETWEEN;
+            }
+            else if(!strcmp("stretch-around", token)){
+                alignment[i] = GUI_ALIGNMENT_STRETCH_AROUND;
+            }
+            else{
+                alignment[i] = GUI_ALIGNMENT_START;
+            }
+        }
+
+        o.horizontal = alignment[0];
+        o.vertical = alignment[1];
+    }
+    else{
+        o = (Alignment){GUI_ALIGNMENT_START, GUI_ALIGNMENT_START};
+    }
+
+    LST_clear(&tokens, 1);
+
+    return o;
+}
+
 void readAttributes(GUI_context * context, xmlElement * el){
     for(int i = 0; i < el->attributes.length; i++){
         xmlAttribute * attr = LST_get(el->attributes, i);
@@ -89,8 +129,13 @@ void readAttributes(GUI_context * context, xmlElement * el){
 
             case GUI_ATTRIBUTE_MARGIN:
             case GUI_ATTRIBUTE_PADDING:
-                Box padding = readBox(attr->value);
-                setAttribute(&context->attributes, attrType, &padding, 0);
+                Box box = readBox(attr->value);
+                setAttribute(&context->attributes, attrType, &box, 0);
+            break;
+
+            case GUI_ATTRIBUTE_ITEM_ALIGNMENT:
+                Alignment itemAlignment = readAligment(attr->value);
+                setAttribute(&context->attributes, attrType, &itemAlignment, 0);
             break;
         }
     }
