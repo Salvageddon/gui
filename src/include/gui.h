@@ -9,11 +9,12 @@
 #include "gui_types.h"
 
 /*
-    Read GUI from and XML file.
+    Read GUI from and XML file for SDL_Surface.
     \param source path to the XML file
+    \param sur target SDL_Surface
     \returns a GUI base context
 */
-GUI_context * GUI_readGUI(const char * source);
+GUI_context * GUI_readGUI(const char * source, SDL_Surface * sur);
 
 /*
     Create and show a window.
@@ -42,7 +43,7 @@ void GUI_bakeGUI(GUI_context * context, SDL_PixelFormat format);
     Render baked GUI on the SDL_Surface.
     \param context rendering starting point
     \param sur target SDL_Surface
-    \warning before rendering, GUI MUST be baked using GUI_bakeGUI()
+    \warning before first rendering, GUI MUST be baked using GUI_bakeGUI()
 */
 void GUI_renderGUI(GUI_context * context, SDL_Surface * sur);
 
