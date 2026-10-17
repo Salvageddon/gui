@@ -141,7 +141,28 @@ void readAttributes(GUI_context * context, xmlElement * el){
     }
 }
 
-void readChildren(GUI_context * context, xmlElement * el){
+char hasAllMandatoryAttributes(GUI_context * context){
+    char ret = 1;
+
+    for(int i = 0; i < context->possibleAttributes.count; i++){
+        AllowedAttribute allowed = context->possibleAttributes.attributes[i];
+
+        if(allowed.mandatory){
+            AttributeData attribute = attributeDefinitions[allowed.id];
+            
+            if(!HLS_get(context->attributes, attribute.attrType)){
+                ret = 0;
+                break;
+            }
+        }
+    }
+
+    return ret;
+}
+
+int readChildren(GUI_context * context, xmlElement * el){
+    int hasErrored = 0;
+
     for(int i = 0; i < el->elements.length; i++){
         xmlElement * xmlChild = LST_get(el->elements, i);
 
@@ -150,9 +171,16 @@ void readChildren(GUI_context * context, xmlElement * el){
             if(!child) break;
 
             readAttributes(child, xmlChild);
-            readChildren(child, xmlChild);
+            if(!hasAllMandatoryAttributes(child)){
+                hasErrored = 1;
+                break;
+            }
+            
+            hasErrored = readChildren(child, xmlChild);
         }
     }
+
+    return hasErrored;
 }
 
 GUI_context * readGui(const char * source, SDL_Surface * sur){
@@ -162,7 +190,7 @@ GUI_context * readGui(const char * source, SDL_Surface * sur){
         return NULL;
     }
 
-    GUI_context * base = createContext(NULL, GUI_CONTROL_BUTTON);
+    GUI_context * base = createContext(NULL, GUI_CONTROL_ROOT);
     base->renderer = NULL;
     base->target = sur;
 
@@ -173,7 +201,12 @@ GUI_context * readGui(const char * source, SDL_Surface * sur){
     setAttribute(&base->attributes, GUI_ATTRIBUTE_WIDTH, &baseSize, 0);
     setAttribute(&base->attributes, GUI_ATTRIBUTE_HEIGHT, &baseSize, 0);
 
-    readChildren(base, root);
+    int hasErrored = readChildren(base, root);
+
+    if(hasErrored){
+        destroyContext(base);
+        base = NULL;
+    }
 
     XML_free(root);
 

@@ -18,18 +18,22 @@
 typedef struct{
     char * name;
     int attrType, autoType;
-} attributeData;
+} AttributeData;
 
 typedef struct{
-    char * attributes;
+    char id, mandatory;
+} AllowedAttribute;
+
+typedef struct{
+    AllowedAttribute * attributes;
     int count;
-} possibleAttributes;
+} PossibleAttributes;
 
-extern attributeData attributeDefinitions[ATTRCOUNT];
+extern AttributeData attributeDefinitions[ATTRCOUNT];
 
-extern char viewAttributes[VIEW_ATTRCNT];
-extern char buttonAttributes[BUTTON_ATTRCNT];
-extern char linearViewAttributes[LINEARVIEW_ATTRCNT];
+extern AllowedAttribute viewAttributes[VIEW_ATTRCNT];
+extern AllowedAttribute buttonAttributes[BUTTON_ATTRCNT];
+extern AllowedAttribute linearViewAttributes[LINEARVIEW_ATTRCNT];
 
 int findAutoType(int attrType);
 int findAttribute(char * attributeName);

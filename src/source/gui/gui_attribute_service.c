@@ -1,6 +1,6 @@
 #include "../../include/gui_attribute_service.h"
 
-attributeData attributeDefinitions[ATTRCOUNT] = {
+AttributeData attributeDefinitions[ATTRCOUNT] = {
     {"orientation", GUI_ATTRIBUTE_ORIENTATION, AUTO_INT},
     {"width", GUI_ATTRIBUTE_WIDTH, AUTO_INT},
     {"height", GUI_ATTRIBUTE_HEIGHT, AUTO_INT},
@@ -9,9 +9,28 @@ attributeData attributeDefinitions[ATTRCOUNT] = {
     {"item-alignment", GUI_ATTRIBUTE_ITEM_ALIGNMENT, AUTO_ALIGNMENT}
 };
 
-char viewAttributes[VIEW_ATTRCNT] = {1, 2, 3, 4};
-char buttonAttributes[BUTTON_ATTRCNT] = {1, 2, 3, 4};
-char linearViewAttributes[LINEARVIEW_ATTRCNT] = {0, 1, 2, 3, 4, 5};
+AllowedAttribute viewAttributes[VIEW_ATTRCNT] = {
+    {1, 1}, 
+    {2, 1}, 
+    {3, 0}, 
+    {4, 0}
+};
+
+AllowedAttribute buttonAttributes[BUTTON_ATTRCNT] = {
+    {1, 1}, 
+    {2, 1}, 
+    {3, 0}, 
+    {4, 0}
+};
+
+AllowedAttribute linearViewAttributes[LINEARVIEW_ATTRCNT] = {
+    {0, 1}, 
+    {1, 1}, 
+    {2, 1}, 
+    {3, 0}, 
+    {4, 0}, 
+    {5, 1}
+};
 
 int findAutoType(int attrType){
     int ret = -1;

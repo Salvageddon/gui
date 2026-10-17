@@ -11,6 +11,14 @@ int main(int argc, char * argv[]){
 
     //red rectangles are linearViews, blue ones are buttons
     win->guiBase = GUI_readGUI("src/pub/interface.xml", win->sur);
+    
+    if(!win->guiBase){
+        printf("GUI reading has failed.\n");
+        GUI_destroyWindow(win);
+        GUI_quit();
+        return 0;
+    }
+
     GUI_bakeGUI(win->guiBase, win->sur->format);
 
     int loop = 1;

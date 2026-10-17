@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 controlData controlDefinitions[CONTROLCOUNT] = {
+    {"view", GUI_CONTROL_VIEW},
     {"button", GUI_CONTROL_BUTTON},
     {"linearView", GUI_CONTROL_LINEARVIEW}
 };
@@ -24,12 +25,21 @@ GUI_context * createContext(GUI_context * parent, int type){
     switch(type){
         case GUI_CONTROL_BUTTON:
             o->renderer = &renderButton;
-            o->possibleAttributes = (possibleAttributes){buttonAttributes, BUTTON_ATTRCNT};
+            o->possibleAttributes = (PossibleAttributes){buttonAttributes, BUTTON_ATTRCNT};
         break;
 
         case GUI_CONTROL_LINEARVIEW:
             o->renderer = &renderLinearView;
-            o->possibleAttributes = (possibleAttributes){linearViewAttributes, LINEARVIEW_ATTRCNT};
+            o->possibleAttributes = (PossibleAttributes){linearViewAttributes, LINEARVIEW_ATTRCNT};
+        break;
+
+        case GUI_CONTROL_VIEW:
+            o->renderer = &renderView;
+            o->possibleAttributes = (PossibleAttributes){viewAttributes, VIEW_ATTRCNT};
+        break;
+
+        case GUI_CONTROL_ROOT: 
+            o->renderData.renderable = 0;
         break;
 
         default:

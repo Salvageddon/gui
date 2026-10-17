@@ -10,7 +10,7 @@
 #include <salvagames/list.h>
 #include <salvagames/hashlist.h>
 
-#define CONTROLCOUNT 2
+#define CONTROLCOUNT 3
 
 typedef struct{
     char allowWidthGrow,
@@ -28,7 +28,7 @@ typedef struct GUI_CONTEXT{
     GUI_context * parent;
     List children;
     Hashlist attributes;
-    possibleAttributes possibleAttributes;
+    PossibleAttributes possibleAttributes;
     void (*renderer)(SDL_Surface * sur, GUI_irect rect, int generation);
 } GUI_context;
 
