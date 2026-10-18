@@ -141,3 +141,9 @@ GUI_rgba GUI_getRGBA(Uint32 color, const SDL_PixelFormatDetails * formatDetails)
     \warning for optimisation purposes formatDetails is not checked for NULL
 */
 Uint32 GUI_mapRGBA(GUI_rgba color, const SDL_PixelFormatDetails * formatDetails);
+
+/*
+    Get recent error message
+    \returns error message
+*/
+char * GUI_getErrorMessage(void);

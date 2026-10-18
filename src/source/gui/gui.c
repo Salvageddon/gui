@@ -17,11 +17,6 @@ GUI_context * GUI_readGUI(const char * source, SDL_Surface * sur){
 }
 
 GUI_window * GUI_createWindow(char * title, int w, int h, Uint32 flags){
-    if(!title){
-        printf("GUI (createWindow()): Window title cannot be NULL.\n");
-        return NULL;
-    }
-
     return createWindow(title, w, h, flags);
 }
 
@@ -114,4 +109,8 @@ GUI_rgba GUI_getRGBA(Uint32 color, const SDL_PixelFormatDetails * formatDetails)
 
 Uint32 GUI_mapRGBA(GUI_rgba color, const SDL_PixelFormatDetails * formatDetails){
     return mapRGBA(color, formatDetails);
+}
+
+char * GUI_getErrorMessage(void){
+    return getErrorMessage();
 }

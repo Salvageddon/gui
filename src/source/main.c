@@ -5,18 +5,27 @@
 
 GUI_window * win;
 
+int failApplication(){
+    printf("Application failed.\n%s\n", GUI_getErrorMessage());
+    printf("SDL ADDITIONAL INFO:\n%s\n", SDL_GetError());
+    GUI_destroyWindow(win);
+    GUI_quit();
+    return 0;
+}
+
 int main(int argc, char * argv[]){
     GUI_init(SDL_INIT_VIDEO);
-    win = GUI_createWindow(":3", 1280, 720, 0);
+    win = GUI_createWindow(NULL, 1280, 720, 0);
 
-    //red rectangles are linearViews, blue ones are buttons
+    if(!win){
+        return failApplication();
+    }
+
+    //red rectangles are linearViews, blue ones are buttons, green are views (plain rectangles)
     win->guiBase = GUI_readGUI("src/pub/interface.xml", win->sur);
     
     if(!win->guiBase){
-        printf("GUI reading has failed.\n");
-        GUI_destroyWindow(win);
-        GUI_quit();
-        return 0;
+        return failApplication();
     }
 
     GUI_bakeGUI(win->guiBase, win->sur->format);
