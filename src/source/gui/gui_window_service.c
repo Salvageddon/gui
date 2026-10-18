@@ -8,7 +8,7 @@ GUI_window * createWindow(char * title, int w, int h, Uint32 flags){
     win->win = SDL_CreateWindow(title, w, h, flags);
 
     if(!win->win){
-        printf("GUI (createWindow()): Window creation failed. Additional info:\n%s\n", SDL_GetError());
+        setErrorMessage("Window creation failed. Call SDL_getError() for more info.\n");
         free(win);
         return NULL;
     }
@@ -16,7 +16,7 @@ GUI_window * createWindow(char * title, int w, int h, Uint32 flags){
     win->sur = SDL_GetWindowSurface(win->win);
 
     if(!win->sur){
-        printf("GUI (service): Surface download failed. Additional info:\n%s\n", SDL_GetError());
+        setErrorMessage("Surface download failed. Call SDL_getError() for more info.\n");
         SDL_DestroyWindow(win->win);
         free(win);
         return NULL;

@@ -172,6 +172,7 @@ int readChildren(GUI_context * context, xmlElement * el){
 
             readAttributes(child, xmlChild);
             if(!hasAllMandatoryAttributes(child)){
+                setErrorMessage("Element doesn't have all necessary attributes.\n");
                 hasErrored = 1;
                 break;
             }
@@ -187,6 +188,7 @@ GUI_context * readGui(const char * source, SDL_Surface * sur){
     xmlElement * root = XML_read(source);
     
     if(!root){
+        setErrorMessage("XML GUI reading failed due to syntax errors.\n");
         return NULL;
     }
 
