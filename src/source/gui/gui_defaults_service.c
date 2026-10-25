@@ -1,6 +1,8 @@
 #include "../../include/gui_defaults_service.h"
 #include <stdio.h>
 
+ListenerData hover, oldHover;
+
 void renderView(SDL_Surface * sur, GUI_irect rect, int generation){
     GUI_rgb color;
     color.r = 0;
@@ -26,4 +28,26 @@ void renderLinearView(SDL_Surface * sur, GUI_irect rect, int generation){
     color.b = 0;
 
     fillRectNV(sur, 0, 0, rect.w, rect.h, mapRGB(color, SDL_GetPixelFormatDetails(sur->format)));
+}
+
+void buttonEventListener(ListenerData data){
+    if(data.contextState.isHovering){
+        switch(data.event.type){
+            case SDL_EVENT_MOUSE_BUTTON_DOWN:
+                switch(data.event.button.button){
+                    case SDL_BUTTON_LEFT:
+                        callEventHandler(data.context, data.eventHandlers, GUI_EVENT_LEFTCLICK);
+                    break;
+
+                    case SDL_BUTTON_MIDDLE:
+                        callEventHandler(data.context, data.eventHandlers, GUI_EVENT_MIDDLECLICK);
+                    break;
+
+                    case SDL_BUTTON_RIGHT:
+                        callEventHandler(data.context, data.eventHandlers, GUI_EVENT_RIGHTCLICK);
+                    break;
+                }
+            break;
+        }
+    }
 }

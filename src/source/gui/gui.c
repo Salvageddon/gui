@@ -69,6 +69,38 @@ void GUI_quit(void){
     quit();
 }
 
+void GUI_listenForEvents(GUI_context * base, SDL_Event event){
+    if(!base){
+        printf("GUI (listenForEvents()): Base cannot be NULL.\n");
+        return;
+    }
+
+    listenForEvents(base, event);
+}
+
+void GUI_appendEventHandler(GUI_context * context, unsigned int eventId, void (*handler)(GUI_context * context)){
+    if(!context){
+        printf("GUI (appendEventHandler()): Context cannot be NULL.\n");
+        return;
+    }
+
+    if(!handler){
+        printf("GUI (appendEventHandler()): Handler cannot be NULL.\n");
+        return;
+    }
+
+    setEventHandler(context, eventId, handler);
+}
+
+GUI_context * GUI_findContextById(GUI_context * base, unsigned int id){
+    if(!base){
+        printf("GUI (findContextById()): Base cannot be NULL.\n");
+        return NULL;
+    }
+
+    return findContextById(base->settings, id);
+}
+
 void GUI_drawRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color){
     if(!sur){
         printf("GUI (drawRect()): Surface cannot be NULL.\n");

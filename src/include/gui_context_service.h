@@ -6,6 +6,8 @@
 #pragma once
 
 #include "gui_defaults_service.h"
+#include "gui_settings_service.h"
+
 #include "gui_enums.h"
 #include <salvagames/list.h>
 #include <salvagames/hashlist.h>
@@ -23,13 +25,16 @@ typedef struct{
 typedef struct GUI_CONTEXT{
     int type, generation;
     RenderData renderData;
+    ContextState contextState;
     GUI_irect controlRect, paddingRect, marginRect, contentRect;
     SDL_Surface * bakeResult, * target;
+    GuiSettings * settings;
     GUI_context * parent;
     List children;
-    Hashlist attributes;
+    Hashlist attributes, eventHandlers;
     PossibleAttributes possibleAttributes;
     void (*renderer)(SDL_Surface * sur, GUI_irect rect, int generation);
+    void (*listener)(ListenerData data);
 } GUI_context;
 
 typedef struct{

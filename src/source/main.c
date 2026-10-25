@@ -13,9 +13,21 @@ int failApplication(){
     return 0;
 }
 
+void enterEventHandler(GUI_context * context){
+    printf("Enter event worked. GUI is functional ^w^\n");
+}
+
+void leaveEventHandler(GUI_context * context){
+    printf("Leave event worked. Amaza Amaze Amaze!!!\n");
+}
+
+void leftClickEventHandler(GUI_context * context){
+    printf("Left click event worked\n");
+}
+
 int main(int argc, char * argv[]){
     GUI_init(SDL_INIT_VIDEO);
-    win = GUI_createWindow(NULL, 1280, 720, 0);
+    win = GUI_createWindow(":3", 1280, 720, 0);
 
     if(!win){
         return failApplication();
@@ -27,6 +39,12 @@ int main(int argc, char * argv[]){
     if(!win->guiBase){
         return failApplication();
     }
+    
+    //Interact with the upper button and it will output events into console
+    GUI_context * button = GUI_findContextById(win->guiBase, 0xa00);
+    GUI_appendEventHandler(button, GUI_EVENT_ENTER, &enterEventHandler);
+    GUI_appendEventHandler(button, GUI_EVENT_LEAVE, &leaveEventHandler);
+    GUI_appendEventHandler(button, GUI_EVENT_LEFTCLICK, &leftClickEventHandler);
 
     GUI_bakeGUI(win->guiBase, win->sur->format);
 
@@ -36,6 +54,8 @@ int main(int argc, char * argv[]){
         SDL_Event events;
 
         while(SDL_PollEvent(&events)){
+            GUI_listenForEvents(win->guiBase, events);
+
             switch(events.type){
                 case SDL_EVENT_QUIT:
                     loop = 0;
