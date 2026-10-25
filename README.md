@@ -2,7 +2,7 @@
 XML GUI library for C.
 
 # warning
-This library is under development. It BARELY has the *gui* part yet.
+This library is under development. It has only *some* gui right now.
 More documentation for this project will be out along with a release.
 For now please use the instruction below and src/pub/interface.xml for reference.
 
