@@ -109,7 +109,9 @@ Alignment readAligment(char * value){
     return o;
 }
 
-void readAttributes(GUI_context * context, xmlElement * el){
+int readAttributes(GUI_context * context, xmlElement * el){
+    int hasErrored = 0;
+
     for(int i = 0; i < el->attributes.length; i++){
         xmlAttribute * attr = LST_get(el->attributes, i);
 
@@ -137,8 +139,28 @@ void readAttributes(GUI_context * context, xmlElement * el){
                 Alignment itemAlignment = readAligment(attr->value);
                 setAttribute(&context->attributes, attrType, &itemAlignment, 0);
             break;
+
+            case GUI_ATTRIBUTE_ID:
+                Uint32 id = stringToHex(attr->value);
+                if(id == 0){
+                    setErrorMessage("Control ID cannot equal 0.\n");
+                    hasErrored = 1;
+                }
+                else if(HLS_get(context->settings->ids, id)){
+                    setErrorMessage("Control with this ID already exists in the GUI.\n");
+                    hasErrored = 1;
+                }
+                else{
+                    setAttribute(&context->attributes, attrType, &id, 0);
+                    HLS_add(&context->settings->ids, id, context, &destroyContext);
+                }
+            break;
         }
+
+        if(hasErrored) break;
     }
+
+    return hasErrored;
 }
 
 char hasAllMandatoryAttributes(GUI_context * context){
@@ -170,7 +192,11 @@ int readChildren(GUI_context * context, xmlElement * el){
             GUI_context * child = createContext(context, getControlType(xmlChild->name));
             if(!child) break;
 
-            readAttributes(child, xmlChild);
+            hasErrored = readAttributes(child, xmlChild);
+            if(hasErrored){
+                break;
+            }
+
             if(!hasAllMandatoryAttributes(child)){
                 setErrorMessage("Element doesn't have all necessary attributes.\n");
                 hasErrored = 1;
@@ -192,7 +218,7 @@ GUI_context * readGui(const char * source, SDL_Surface * sur){
         return NULL;
     }
 
-    GUI_context * base = createContext(NULL, GUI_CONTROL_ROOT);
+    GUI_context * base = createContext(NULL, GUI_CONTROL_BASE);
     base->renderer = NULL;
     base->target = sur;
 

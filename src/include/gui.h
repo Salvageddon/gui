@@ -7,6 +7,7 @@
 #pragma once
 
 #include "gui_types.h"
+#include "gui_enums.h"
 
 /*
     Read GUI from and XML file for SDL_Surface.
@@ -63,6 +64,31 @@ void GUI_init(Uint32 flags);
     Quit SDL. Use this for SDL_Quit().
 */
 void GUI_quit(void);
+
+/*
+    Activate event listeners for specified GUI.
+    \param base base of the GUI. You can pass any context from your GUI tree here, but it will listen for events only from specified context and it's children
+    \param event current SDL event state
+    \warning Call this inside your update loop. Otherwise it's useless
+*/
+void GUI_listenForEvents(GUI_context * base, SDL_Event event);
+
+/*
+    Append an event handler of specified event to context. 
+    Will replace an existing event handler.
+    \param context target GUI_context
+    \param eventId id of event from GUI_eventTypes
+    \param handler event handler function
+*/
+void GUI_appendEventHandler(GUI_context * context, unsigned int eventId, void (*handler)(GUI_context * context));
+
+/*
+    Find context by specified id.
+    \param base base of a GUI. You can also pass any context from your GUI tree here.
+    \param id id from your id XML attribute
+    \returns GUI_context with coresponding id or NULL if not found.
+*/
+GUI_context * GUI_findContextById(GUI_context * base, unsigned int id);
 
 /*
     Draw a rectangle on SDL_Surface

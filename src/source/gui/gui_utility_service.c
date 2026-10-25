@@ -41,11 +41,13 @@ Uint32 stringToHex(char * value){
             case 'C': case 'c': number = 12; break;
             case 'B': case 'b': number = 11; break;
             case 'A': case 'a': number = 10; break;
-            default: value[index] = number - '0';
+            default: number = value[index] - '0';
         }
 
         o *= 16;
         o += number;
+
+        index++;
     }
 
     return o;

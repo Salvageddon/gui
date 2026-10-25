@@ -6,21 +6,24 @@ AttributeData attributeDefinitions[ATTRCOUNT] = {
     {"height", GUI_ATTRIBUTE_HEIGHT, AUTO_INT},
     {"margin", GUI_ATTRIBUTE_MARGIN, AUTO_BOX},
     {"padding", GUI_ATTRIBUTE_PADDING, AUTO_BOX},
-    {"item-alignment", GUI_ATTRIBUTE_ITEM_ALIGNMENT, AUTO_ALIGNMENT}
+    {"item-alignment", GUI_ATTRIBUTE_ITEM_ALIGNMENT, AUTO_ALIGNMENT},
+    {"id", GUI_ATTRIBUTE_ID, AUTO_HEX}
 };
 
 AllowedAttribute viewAttributes[VIEW_ATTRCNT] = {
     {1, 1}, 
     {2, 1}, 
     {3, 0}, 
-    {4, 0}
+    {4, 0},
+    {6, 0}
 };
 
 AllowedAttribute buttonAttributes[BUTTON_ATTRCNT] = {
     {1, 1}, 
     {2, 1}, 
     {3, 0}, 
-    {4, 0}
+    {4, 0},
+    {6, 0}
 };
 
 AllowedAttribute linearViewAttributes[LINEARVIEW_ATTRCNT] = {
@@ -29,7 +32,8 @@ AllowedAttribute linearViewAttributes[LINEARVIEW_ATTRCNT] = {
     {2, 1}, 
     {3, 0}, 
     {4, 0}, 
-    {5, 1}
+    {5, 1},
+    {6, 0}
 };
 
 int findAutoType(int attrType){
@@ -109,4 +113,10 @@ Alignment getItemAlignment(Hashlist attributes){
     Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_ITEM_ALIGNMENT);
     if(!au) return (Alignment){GUI_ALIGNMENT_START, GUI_ALIGNMENT_START};
     else return getAlignment(au);
+}
+
+Uint32 getId(Hashlist attributes){
+    Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_ID);
+    if(!au) return 0;
+    else return getHex(au);
 }

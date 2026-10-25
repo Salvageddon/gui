@@ -3,12 +3,9 @@
             margin="10" 
             padding="10 20"
             width="size-max"
-            height="size-max"
+            height="500"
             item-alignment="stretch-between stretch-between">
-    <button margin="10" width="100" height="100"></button>
+    <button margin="10" width="100" height="100" id="#A00"></button>
     <button margin="10" width="500" height="200"></button>
-
-    <!--<view> doesn't have height attribute-->
-    <view margin="10" width="200"></view>
-<!--</linearView> doesn't have a '>'-->
-</linearView
+    <view margin="10" width="200" height="150"></view>
+</linearView>

@@ -8,6 +8,8 @@ controlData controlDefinitions[CONTROLCOUNT] = {
     {"linearView", GUI_CONTROL_LINEARVIEW}
 };
 
+void fakeEventListener(ListenerData hewwo){}
+
 GUI_context * createContext(GUI_context * parent, int type){
     GUI_context * o = malloc(sizeof(GUI_context));
 
@@ -21,25 +23,30 @@ GUI_context * createContext(GUI_context * parent, int type){
     o->parent = parent;
     o->children = LST_createList();
     o->attributes = HLS_createList();
+    o->eventHandlers = HLS_createList();
 
     switch(type){
         case GUI_CONTROL_BUTTON:
             o->renderer = &renderButton;
             o->possibleAttributes = (PossibleAttributes){buttonAttributes, BUTTON_ATTRCNT};
+            o->listener = &buttonEventListener;
         break;
 
         case GUI_CONTROL_LINEARVIEW:
             o->renderer = &renderLinearView;
             o->possibleAttributes = (PossibleAttributes){linearViewAttributes, LINEARVIEW_ATTRCNT};
+            o->listener = &fakeEventListener;
         break;
 
         case GUI_CONTROL_VIEW:
             o->renderer = &renderView;
             o->possibleAttributes = (PossibleAttributes){viewAttributes, VIEW_ATTRCNT};
+            o->listener = &fakeEventListener;
         break;
 
-        case GUI_CONTROL_ROOT: 
+        case GUI_CONTROL_BASE: 
             o->renderData.renderable = 0;
+            o->listener = &fakeEventListener;
         break;
 
         default:
@@ -51,10 +58,12 @@ GUI_context * createContext(GUI_context * parent, int type){
         o->generation = parent->generation + 1;
         LST_add(&parent->children, o, &destroyContext);
         o->target = parent->target;
+        o->settings = parent->settings;
     }
     else{
         o->generation = 0;
         o->target = NULL;
+        o->settings = createGuiSettings();
     }
 
     return o;
@@ -69,6 +78,7 @@ void destroyContext(void * context){
 
     LST_clear(&ctx->children, 0);
     HLS_clear(&ctx->attributes, 1);
+    HLS_clear(&ctx->eventHandlers, 0);
     SDL_DestroySurface(ctx->bakeResult);
 
     free(context);
