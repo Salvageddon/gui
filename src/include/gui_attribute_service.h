@@ -7,13 +7,14 @@
 
 #include "gui_pixel_service.h"
 #include "gui_auto_service.h"
+#include "gui_font_service.h"
 
 #include "gui_enums.h"
 #include <salvagames/hashlist.h>
 
-#define ATTRCOUNT 7
+#define ATTRCOUNT 9
 #define VIEW_ATTRCNT 5
-#define BUTTON_ATTRCNT 5
+#define BUTTON_ATTRCNT 7
 #define LINEARVIEW_ATTRCNT 7
 
 typedef struct{
@@ -47,3 +48,5 @@ Box getMargin(Hashlist attributes);
 Box getPadding(Hashlist attributes);
 Alignment getItemAlignment(Hashlist attributes);
 Uint32 getId(Hashlist attributes);
+char * getText(Hashlist attributes);
+int getTextSize(Hashlist attributes);

@@ -71,11 +71,11 @@ GUI_context * createContext(GUI_context * parent, int type){
 
 void destroyContext(void * context){
     GUI_context * ctx = context;
-
+    
     for(int i = 0; i < ctx->children.length; i++){
         destroyContext(LST_get(ctx->children, i));
     }
-
+    
     LST_clear(&ctx->children, 0);
     HLS_clear(&ctx->attributes, 1);
     HLS_clear(&ctx->eventHandlers, 0);
@@ -95,4 +95,26 @@ int getControlType(char * controlName){
     }
 
     return ret;
+}
+
+void * getRenderArgs(GUI_context * context){
+    switch(context->type){
+        case GUI_CONTROL_BUTTON:
+            ButtonRenderArgs * buttonRA = malloc(sizeof(ButtonRenderArgs));
+            buttonRA->sur = context->bakeResult;
+            buttonRA->rect = context->paddingRect;
+            buttonRA->controlRect = context->controlRect;
+            buttonRA->generation = context->generation;
+            buttonRA->text = getText(context->attributes);
+            buttonRA->textSize = getTextSize(context->attributes);
+            buttonRA->font = HLS_get(context->settings->fonts, context->settings->focusedFont);
+        return buttonRA;
+
+        default:
+            RenderArgs * ra = malloc(sizeof(RenderArgs));
+            ra->sur = context->bakeResult;
+            ra->rect = context->paddingRect;
+            ra->generation = context->generation;
+            return ra;
+    }
 }

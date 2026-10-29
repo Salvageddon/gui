@@ -360,7 +360,10 @@ void bakeControl(GUI_context * context, SDL_PixelFormat format){
         
         if(child->renderData.renderable){
             child->bakeResult = SDL_CreateSurface(child->paddingRect.w, child->paddingRect.h, format);
-            if(child->renderer) child->renderer(child->bakeResult, child->paddingRect, child->generation);
+            if(child->renderer){
+                void * renderArgs = getRenderArgs(child);
+                child->renderer(renderArgs);
+            }
 
             bakeControl(child, format);
         }

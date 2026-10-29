@@ -1,5 +1,6 @@
 #include "../../include/gui_auto_service.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 Auto * typeAuto(Auto * o, int type, void * value, int stringLength){
     o->type = type;
@@ -22,8 +23,11 @@ Auto * typeAuto(Auto * o, int type, void * value, int stringLength){
         break;
 
         case AUTO_STRING:
-            o->value = malloc(sizeof(stringLength));
-            o->value = value;
+            char * text = malloc(sizeof(char) * (stringLength + 1));
+            for(int i = 0; i < stringLength + 1; i++){
+                text[i] = ((char*)value)[i];
+            }
+            o->value = text;
         break;
 
         case AUTO_BOX:

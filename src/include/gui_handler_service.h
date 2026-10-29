@@ -7,6 +7,7 @@
 
 #include "gui_pixel_service.h"
 #include "gui_auto_service.h"
+#include "gui_font_service.h"
 
 #include "gui_enums.h"
 #include "gui_types.h"

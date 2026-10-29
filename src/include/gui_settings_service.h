@@ -13,9 +13,10 @@
 #include <salvagames/hashlist.h>
 
 typedef struct{
-    Hashlist ids;
+    Hashlist ids, fonts;
     GUI_context * hover, * oldHover;
     Mouse mouse;
+    unsigned int focusedFont;
 } GuiSettings;
 
 GuiSettings * createGuiSettings(void);

@@ -7,6 +7,7 @@
 #include <SDL3/SDL.h>
 
 typedef struct GUI_CONTEXT GUI_context;
+typedef struct GUI_FONT GUI_font;
 
 typedef struct{
     SDL_Window * win;

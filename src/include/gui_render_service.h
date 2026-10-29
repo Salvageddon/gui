@@ -9,8 +9,10 @@
 
 #include "gui_pixel_service.h"
 #include "gui_auto_service.h"
+#include "gui_font_service.h"
 
 void drawRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
 void drawRectNV(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
 void fillRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
 void fillRectNV(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
+void renderText(SDL_Surface * sur, char * text, int textSize, int x, int y, int w, int h, GUI_font * font);

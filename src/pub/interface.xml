@@ -5,7 +5,7 @@
             width="size-max"
             height="500"
             item-alignment="stretch-between stretch-between">
-    <button margin="10" width="100" height="100" id="#A00"></button>
+    <button margin="10" padding="150 100" width="100" height="100" id="#A00" text="Click me" text-size="20"></button>
     <button margin="10" width="500" height="200"></button>
     <view margin="10" width="200" height="150"></view>
 </linearView>

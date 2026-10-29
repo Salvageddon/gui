@@ -3,31 +3,35 @@
 
 ListenerData hover, oldHover;
 
-void renderView(SDL_Surface * sur, GUI_irect rect, int generation){
+void renderView(void * renderArgs){
+    RenderArgs * ra = renderArgs;
     GUI_rgb color;
     color.r = 0;
-    color.g = 255 - generation * 20;
+    color.g = 255 - ra->generation * 20;
     color.b = 0;
 
-    fillRectNV(sur, 0, 0, rect.w, rect.h, mapRGB(color, SDL_GetPixelFormatDetails(sur->format)));
+    fillRectNV(ra->sur, 0, 0, ra->rect.w, ra->rect.h, mapRGB(color, SDL_GetPixelFormatDetails(ra->sur->format)));
 }
 
-void renderButton(SDL_Surface * sur, GUI_irect rect, int generation){
+void renderButton(void * buttonRenderArgs){
+    ButtonRenderArgs * ra = buttonRenderArgs;
     GUI_rgb color;
     color.r = 0;
     color.g = 0;
-    color.b = 255 - generation * 20;
+    color.b = 255 - ra->generation * 20;
 
-    fillRectNV(sur, 0, 0, rect.w, rect.h, mapRGB(color, SDL_GetPixelFormatDetails(sur->format)));
+    fillRectNV(ra->sur, 0, 0, ra->rect.w, ra->rect.h, mapRGB(color, SDL_GetPixelFormatDetails(ra->sur->format)));
+    renderText(ra->sur, ra->text, ra->textSize, ra->rect.x, ra->rect.y, ra->rect.w, ra->rect.h, ra->font);
 }
 
-void renderLinearView(SDL_Surface * sur, GUI_irect rect, int generation){
+void renderLinearView(void * renderArgs){
+    RenderArgs * ra = renderArgs;
     GUI_rgb color;
-    color.r = 255 - generation * 20;
+    color.r = 255 - ra->generation * 20;
     color.g = 0;
     color.b = 0;
 
-    fillRectNV(sur, 0, 0, rect.w, rect.h, mapRGB(color, SDL_GetPixelFormatDetails(sur->format)));
+    fillRectNV(ra->sur, 0, 0, ra->rect.w, ra->rect.h, mapRGB(color, SDL_GetPixelFormatDetails(ra->sur->format)));
 }
 
 void buttonEventListener(ListenerData data){

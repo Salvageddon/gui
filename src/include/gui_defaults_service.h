@@ -11,6 +11,21 @@
 #include "gui_mouse_service.h"
 
 typedef struct{
+    SDL_Surface * sur; 
+    GUI_irect rect; 
+    int generation;
+} RenderArgs;
+
+typedef struct{
+    SDL_Surface * sur;
+    GUI_irect rect, controlRect; 
+    int generation;
+    char * text;
+    int textSize;
+    GUI_font * font;
+} ButtonRenderArgs;
+
+typedef struct{
     char isHovering;
 } ContextState;
 
@@ -21,7 +36,7 @@ typedef struct{
     SDL_Event event;
 } ListenerData;
 
-void renderView(SDL_Surface * sur, GUI_irect rect, int generation);
-void renderButton(SDL_Surface * sur, GUI_irect rect, int generation);
-void renderLinearView(SDL_Surface * sur, GUI_irect rect, int generation);
+void renderView(void * renderArgs);
+void renderButton(void * buttonRenderArgs);
+void renderLinearView(void * renderArgs);
 void buttonEventListener(ListenerData data);

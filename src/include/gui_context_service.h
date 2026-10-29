@@ -33,7 +33,7 @@ typedef struct GUI_CONTEXT{
     List children;
     Hashlist attributes, eventHandlers;
     PossibleAttributes possibleAttributes;
-    void (*renderer)(SDL_Surface * sur, GUI_irect rect, int generation);
+    void (*renderer)(void * renderArgs);
     void (*listener)(ListenerData data);
 } GUI_context;
 
@@ -47,3 +47,4 @@ extern controlData controlDefinitions[CONTROLCOUNT];
 GUI_context * createContext(GUI_context * parent, int type);
 void destroyContext(void * context);
 int getControlType(char * controlName);
+void * getRenderArgs(GUI_context * context);
