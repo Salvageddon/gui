@@ -14,7 +14,7 @@ GUI_context * createContext(GUI_context * parent, int type){
     GUI_context * o = malloc(sizeof(GUI_context));
 
     o->type = type;
-    o->renderData = (RenderData){0, 0, 0, 0, 1};
+    o->renderData = (RenderData){0, 0, 0, 0, 1, createTextData()};
     o->controlRect = (GUI_irect){0, 0, 0, 0};
     o->paddingRect = (GUI_irect){0, 0, 0, 0};
     o->marginRect = (GUI_irect){0, 0, 0, 0};
@@ -75,6 +75,8 @@ void destroyContext(void * context){
     for(int i = 0; i < ctx->children.length; i++){
         destroyContext(LST_get(ctx->children, i));
     }
+
+    LST_clear(&ctx->renderData.textData.tokens, 1);
     
     LST_clear(&ctx->children, 0);
     HLS_clear(&ctx->attributes, 1);
@@ -105,9 +107,7 @@ void * getRenderArgs(GUI_context * context){
             buttonRA->rect = context->paddingRect;
             buttonRA->controlRect = context->controlRect;
             buttonRA->generation = context->generation;
-            buttonRA->text = getText(context->attributes);
-            buttonRA->textSize = getTextSize(context->attributes);
-            buttonRA->font = HLS_get(context->settings->fonts, context->settings->focusedFont);
+            buttonRA->renderData = context->renderData.textData;
         return buttonRA;
 
         default:

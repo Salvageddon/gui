@@ -1,10 +1,12 @@
 /*
     Font operation functions
-    Violence
+    Fraud
 */
 
 #pragma once
 
+#include "gui_utility_service.h"
+#include "gui_errors_service.h"
 #include "gui_color_service.h"
 
 #define CHARCOUNT 96

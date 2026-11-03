@@ -21,7 +21,7 @@ void renderButton(void * buttonRenderArgs){
     color.b = 255 - ra->generation * 20;
 
     fillRectNV(ra->sur, 0, 0, ra->rect.w, ra->rect.h, mapRGB(color, SDL_GetPixelFormatDetails(ra->sur->format)));
-    renderText(ra->sur, ra->text, ra->textSize, ra->rect.x, ra->rect.y, ra->rect.w, ra->rect.h, ra->font);
+    renderText(ra->sur, ra->renderData, ra->rect.x, ra->rect.y, ra->rect.w, ra->rect.h);
 }
 
 void renderLinearView(void * renderArgs){

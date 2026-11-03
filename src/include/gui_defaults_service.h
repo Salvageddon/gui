@@ -20,9 +20,7 @@ typedef struct{
     SDL_Surface * sur;
     GUI_irect rect, controlRect; 
     int generation;
-    char * text;
-    int textSize;
-    GUI_font * font;
+    TextRenderData renderData;
 } ButtonRenderArgs;
 
 typedef struct{

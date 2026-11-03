@@ -20,6 +20,7 @@ typedef struct{
         allowHorizontalBoxes,
         allowVerticalBoxes,
         renderable;
+        TextRenderData textData;
 } RenderData;
 
 typedef struct GUI_CONTEXT{

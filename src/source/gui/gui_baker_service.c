@@ -1,5 +1,6 @@
 #include "../../include/gui_baker_service.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int stretchParentsWidth(GUI_context * context){
     if(context->parent){
@@ -65,6 +66,20 @@ int stretchParentsHeight(GUI_context * context){
     }
 }
 
+GUI_irect getRequestedSize(GUI_context * context){
+    switch(context->type){
+        case GUI_CONTROL_BUTTON:
+            GUI_font * font = HLS_get(context->settings->fonts, context->settings->focusedFont);
+            int textSize = getTextSize(context->attributes);
+            char * text = getText(context->attributes);
+            getTextRect(&context->renderData.textData, text, textSize, font, 0);
+            return context->renderData.textData.textRect;
+
+        default:
+            return (GUI_irect){0, 0, 0, 0};
+    }
+}
+
 void sizeControl(GUI_context * context){
     int width = getWidth(context->attributes);
     int height = getHeight(context->attributes);
@@ -72,8 +87,12 @@ void sizeControl(GUI_context * context){
     Box padding = getPadding(context->attributes);
     Box margin = getMargin(context->attributes);
 
+    GUI_irect requestedSize = getRequestedSize(context);
+
     switch(width){
         case GUI_SIZE_MIN:
+            context->controlRect.w = requestedSize.w;
+
             context->renderData.allowWidthGrow = 1;
             context->renderData.allowHorizontalBoxes = 1;
         break;
@@ -95,6 +114,8 @@ void sizeControl(GUI_context * context){
 
     switch(height){
         case GUI_SIZE_MIN:
+            context->controlRect.h = requestedSize.h;
+
             context->renderData.allowHeightGrow = 1;
             context->renderData.allowVerticalBoxes = 1;
         break;
@@ -359,10 +380,11 @@ void bakeControl(GUI_context * context, SDL_PixelFormat format){
         SDL_DestroySurface(child->bakeResult);
         
         if(child->renderData.renderable){
-            child->bakeResult = SDL_CreateSurface(child->paddingRect.w, child->paddingRect.h, format);
             if(child->renderer){
+                child->bakeResult = SDL_CreateSurface(child->paddingRect.w, child->paddingRect.h, format);
                 void * renderArgs = getRenderArgs(child);
                 child->renderer(renderArgs);
+                free(renderArgs);
             }
 
             bakeControl(child, format);

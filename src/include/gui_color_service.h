@@ -1,12 +1,9 @@
 /*
     Color conversion functions
-    Fraud
+    Treachery
 */
 
 #pragma once
-
-#include "gui_utility_service.h"
-#include "gui_errors_service.h"
 
 #include "gui_types.h"
 

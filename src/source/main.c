@@ -41,7 +41,7 @@ int main(int argc, char * argv[]){
     if(!win->guiBase){
         return failApplication();
     }
-
+    
     //Reading and adding font
     GUI_font * font = GUI_createFont("src/pub/font.bmp", 6, 10, 15, 0x000000);
     GUI_addFont(win->guiBase, font, FONTKEY);
@@ -52,7 +52,7 @@ int main(int argc, char * argv[]){
     GUI_appendEventHandler(button, GUI_EVENT_ENTER, &enterEventHandler);
     GUI_appendEventHandler(button, GUI_EVENT_LEAVE, &leaveEventHandler);
     GUI_appendEventHandler(button, GUI_EVENT_LEFTCLICK, &leftClickEventHandler);
-
+    
     GUI_bakeGUI(win->guiBase, win->sur->format);
 
     int loop = 1;
