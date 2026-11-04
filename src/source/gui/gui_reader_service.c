@@ -125,6 +125,7 @@ int readAttributes(GUI_context * context, xmlElement * el){
 
             case GUI_ATTRIBUTE_WIDTH:
             case GUI_ATTRIBUTE_HEIGHT:
+            case GUI_ATTRIBUTE_TEXT_SIZE:
                 int size = readSize(attr->value);
                 setAttribute(&context->attributes, attrType, &size, 0);
             break;
@@ -154,6 +155,10 @@ int readAttributes(GUI_context * context, xmlElement * el){
                     setAttribute(&context->attributes, attrType, &id, 0);
                     HLS_add(&context->settings->ids, id, context, &destroyContext);
                 }
+            break;
+
+            case GUI_ATTRIBUTE_TEXT:
+                setAttribute(&context->attributes, attrType, attr->value, attr->valueLength);
             break;
         }
 

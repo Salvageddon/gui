@@ -7,7 +7,9 @@ AttributeData attributeDefinitions[ATTRCOUNT] = {
     {"margin", GUI_ATTRIBUTE_MARGIN, AUTO_BOX},
     {"padding", GUI_ATTRIBUTE_PADDING, AUTO_BOX},
     {"item-alignment", GUI_ATTRIBUTE_ITEM_ALIGNMENT, AUTO_ALIGNMENT},
-    {"id", GUI_ATTRIBUTE_ID, AUTO_HEX}
+    {"id", GUI_ATTRIBUTE_ID, AUTO_HEX},
+    {"text", GUI_ATTRIBUTE_TEXT, AUTO_STRING},
+    {"text-size", GUI_ATTRIBUTE_TEXT_SIZE, AUTO_INT}
 };
 
 AllowedAttribute viewAttributes[VIEW_ATTRCNT] = {
@@ -23,7 +25,9 @@ AllowedAttribute buttonAttributes[BUTTON_ATTRCNT] = {
     {2, 1}, 
     {3, 0}, 
     {4, 0},
-    {6, 0}
+    {6, 0},
+    {7, 0},
+    {8, 0}
 };
 
 AllowedAttribute linearViewAttributes[LINEARVIEW_ATTRCNT] = {
@@ -119,4 +123,16 @@ Uint32 getId(Hashlist attributes){
     Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_ID);
     if(!au) return 0;
     else return getHex(au);
+}
+
+char * getText(Hashlist attributes){
+    Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_TEXT);
+    if(!au) return "";
+    else return getString(au);
+}
+
+int getTextSize(Hashlist attributes){
+    Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_TEXT_SIZE);
+    if(!au) return -1;
+    else return getInt(au);
 }

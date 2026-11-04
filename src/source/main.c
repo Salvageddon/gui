@@ -3,6 +3,8 @@
 #include <SDL3/SDL.h>
 #include <salvagames/xmlReader.h>
 
+#define FONTKEY 0xAAA
+
 GUI_window * win;
 
 int failApplication(){
@@ -40,12 +42,17 @@ int main(int argc, char * argv[]){
         return failApplication();
     }
     
+    //Reading and adding font
+    GUI_font * font = GUI_createFont("src/pub/font.bmp", 6, 10, 15, 0x000000);
+    GUI_addFont(win->guiBase, font, FONTKEY);
+    //GUI_setFocusFont(win->guiBase, FONTKEY);
+    
     //Interact with the upper button and it will output events into console
     GUI_context * button = GUI_findContextById(win->guiBase, 0xa00);
     GUI_appendEventHandler(button, GUI_EVENT_ENTER, &enterEventHandler);
     GUI_appendEventHandler(button, GUI_EVENT_LEAVE, &leaveEventHandler);
     GUI_appendEventHandler(button, GUI_EVENT_LEFTCLICK, &leftClickEventHandler);
-
+    
     GUI_bakeGUI(win->guiBase, win->sur->format);
 
     int loop = 1;

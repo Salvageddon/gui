@@ -101,6 +101,85 @@ GUI_context * GUI_findContextById(GUI_context * base, unsigned int id){
     return findContextById(base->settings, id);
 }
 
+GUI_font * GUI_createFont(const char * source, int charWidth, int charHeight, int charsPerRow, Uint32 mask){
+    if(!source){
+        printf("GUI (createFont()): Source path cannot be NULL.\n");
+        return NULL;
+    }
+
+    return createFont(source, charWidth, charHeight, charsPerRow, mask);
+}
+
+void GUI_destroyFont(GUI_font * font){
+    if(!font){
+        printf("GUI (desroyFont()): Target font cannot be NULL.\n");
+        return;
+    }
+
+    destroyFont(font);
+}
+
+void GUI_addFont(GUI_context * base, GUI_font * font, unsigned int fontKey){
+    if(!base){
+        printf("GUI (addFont()): Base cannot be NULL.\n");
+        return;
+    }
+
+    if(!font){
+        printf("GUI (addFont()): Font cannot be NULL.\n");
+        return;
+    }
+    
+    if(HLS_get(base->settings->fonts, fontKey)){
+        printf("GUI (addFont()): Font with this key already exists.\n");
+        return;
+    }
+
+    font->isAppended = 1;
+    HLS_add(&base->settings->fonts, fontKey, font, &destroyFont);
+}
+
+GUI_font * GUI_getFont(GUI_context * base, unsigned int fontKey){
+    if(!base){
+        printf("GUI (getFont()): Base cannot be NULL.\n");
+        return NULL;
+    }
+
+    return HLS_get(base->settings->fonts, fontKey);
+}
+
+GUI_font * GUI_removeFont(GUI_context * base, unsigned int fontKey){
+    if(!base){
+        printf("GUI (removeFont()): Base cannot be NULL.\n");
+        return NULL;
+    }
+
+    GUI_font * font = HLS_get(base->settings->fonts, fontKey);
+    if(!font){
+        printf("GUI (removeFont()): Font with this key doesn't exist.\n");
+        return NULL;
+    }
+
+    font->isAppended = 0;
+    HLS_remove(&base->settings->fonts, fontKey, 0);
+
+    return font;
+}
+
+void GUI_setFocusFont(GUI_context * base, unsigned int fontKey){
+    if(!base){
+        printf("GUI (setFocusFont()): Base cannot be NULL.\n");
+        return;
+    }
+
+    if(!HLS_get(base->settings->fonts, fontKey)){
+        printf("GUI (setFocusFont()): Font with this key doesn't exist.\n");
+        return;
+    }
+
+    base->settings->focusedFont = fontKey;
+}
+
 void GUI_drawRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color){
     if(!sur){
         printf("GUI (drawRect()): Surface cannot be NULL.\n");

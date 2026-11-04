@@ -3,6 +3,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+char * rewriteString(char * str){
+    int length = strlen(str);
+    char * newString = malloc(length + 1);
+    strcpy(newString, str);
+    return newString;
+}
+
 int stringToInt(char * value){
     int index = 0, negativity = 1;
 

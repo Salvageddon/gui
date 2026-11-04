@@ -14,7 +14,7 @@ GUI_context * createContext(GUI_context * parent, int type){
     GUI_context * o = malloc(sizeof(GUI_context));
 
     o->type = type;
-    o->renderData = (RenderData){0, 0, 0, 0, 1};
+    o->renderData = (RenderData){0, 0, 0, 0, 1, createTextData()};
     o->controlRect = (GUI_irect){0, 0, 0, 0};
     o->paddingRect = (GUI_irect){0, 0, 0, 0};
     o->marginRect = (GUI_irect){0, 0, 0, 0};
@@ -71,11 +71,13 @@ GUI_context * createContext(GUI_context * parent, int type){
 
 void destroyContext(void * context){
     GUI_context * ctx = context;
-
+    
     for(int i = 0; i < ctx->children.length; i++){
         destroyContext(LST_get(ctx->children, i));
     }
 
+    LST_clear(&ctx->renderData.textData.tokens, 1);
+    
     LST_clear(&ctx->children, 0);
     HLS_clear(&ctx->attributes, 1);
     HLS_clear(&ctx->eventHandlers, 0);
@@ -95,4 +97,24 @@ int getControlType(char * controlName){
     }
 
     return ret;
+}
+
+void * getRenderArgs(GUI_context * context){
+    switch(context->type){
+        case GUI_CONTROL_BUTTON:
+            ButtonRenderArgs * buttonRA = malloc(sizeof(ButtonRenderArgs));
+            buttonRA->sur = context->bakeResult;
+            buttonRA->rect = context->paddingRect;
+            buttonRA->controlRect = context->controlRect;
+            buttonRA->generation = context->generation;
+            buttonRA->renderData = context->renderData.textData;
+        return buttonRA;
+
+        default:
+            RenderArgs * ra = malloc(sizeof(RenderArgs));
+            ra->sur = context->bakeResult;
+            ra->rect = context->paddingRect;
+            ra->generation = context->generation;
+            return ra;
+    }
 }

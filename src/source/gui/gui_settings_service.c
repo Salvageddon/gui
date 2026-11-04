@@ -5,15 +5,18 @@ GuiSettings * createGuiSettings(void){
     GuiSettings * o = malloc(sizeof(GuiSettings));
 
     o->ids = HLS_createList();
+    o->fonts = HLS_createList();
     o->hover = NULL;
     o->oldHover = NULL;
     o->mouse = (Mouse){0, 0, 0};
+    o->focusedFont = 0;
 
     return o;
 }
 
 void destroyGuiSettings(GuiSettings * settings){
     HLS_clear(&settings->ids, 0);
+    HLS_clear(&settings->fonts, 1);
     free(settings);
 }
 
