@@ -45,7 +45,7 @@ int main(int argc, char * argv[]){
     //Reading and adding font
     GUI_font * font = GUI_createFont("src/pub/font.bmp", 6, 10, 15, 0x000000);
     GUI_addFont(win->guiBase, font, FONTKEY);
-    GUI_setFocusFont(win->guiBase, FONTKEY);
+    //GUI_setFocusFont(win->guiBase, FONTKEY);
     
     //Interact with the upper button and it will output events into console
     GUI_context * button = GUI_findContextById(win->guiBase, 0xa00);
@@ -69,16 +69,6 @@ int main(int argc, char * argv[]){
                 break;
             }
         }
-
-        /*SDL_Surface * sur = SDL_LoadBMP("src/pub/font.bmp");
-        
-        for(int y = 0; y < sur->h; y++){
-            for(int x = 0; x < sur->w; x++){
-                GUI_setPixel(win->sur, x, y, GUI_getPixel(sur, x, y));
-            }
-        }
-
-        SDL_DestroySurface(sur);*/
 
         GUI_renderGUI(win->guiBase, win->sur);
         SDL_UpdateWindowSurface(win->win);

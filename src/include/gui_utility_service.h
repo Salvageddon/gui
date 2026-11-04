@@ -8,6 +8,7 @@
 #include <SDL3/SDL.h>
 #include <salvagames/list.h>
 
+char * rewriteString(char * str);
 int stringToInt(char * value);
 Uint32 stringToHex(char * value);
 void destroyToken(void * token);

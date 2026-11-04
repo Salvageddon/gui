@@ -71,15 +71,15 @@ void renderText(SDL_Surface * sur, TextRenderData renderData, int x, int y, int 
 
     Uint32 * pixels = sur->pixels;
 
-    for(int i = 0; i < renderData.tokens.length; i++){
-        RenderToken * token = LST_get(renderData.tokens, i);
+    if(renderData.font){
+        for(int i = 0; i < renderData.tokens.length; i++){
+            RenderToken * token = LST_get(renderData.tokens, i);
 
-        for(int j = 0; j < token->length; j++){
-            char id = token->value[j] - ' ';
+            for(int j = 0; j < token->length; j++){
+                char id = token->value[j] - ' ';
 
-            if(id < 0) break;
+                if(id < 0) break;
 
-            if(renderData.font){
                 char * pseudoPixels = renderData.font->chars[id];
 
                 for(int y = 0; y < renderData.ch; y++){
@@ -92,23 +92,38 @@ void renderText(SDL_Surface * sur, TextRenderData renderData, int x, int y, int 
                         }
                     }
                 }
+
+                tx += renderData.cw;
             }
-            else{
+
+            tx += renderData.cw;
+
+            if(tx - xStart >= renderData.textRect.w){
+                tx = xStart;
+                ty += renderData.ch;
+            }
+        }
+    }
+    else{
+        for(int i = 0; i < renderData.tokens.length; i++){
+            RenderToken * token = LST_get(renderData.tokens, i);
+
+            for(int j = 0; j < token->length; j++){
                 for(int y = 0; y < renderData.ch; y++){
                     for(int x = 0; x < renderData.cw; x++){
                         pixels[(ty + y) * sur->w + (tx + x)] = 0xFFFFFF;
                     }
                 }
+
+                tx += renderData.cw;
             }
 
             tx += renderData.cw;
-        }
 
-        tx += renderData.cw;
-
-        if(tx - xStart >= renderData.textRect.w){
-            tx = xStart;
-            ty += renderData.ch;
+            if(tx - xStart >= renderData.textRect.w){
+                tx = xStart;
+                ty += renderData.ch;
+            }
         }
     }
 }
