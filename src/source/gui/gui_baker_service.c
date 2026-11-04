@@ -396,6 +396,7 @@ void bakeGui(GUI_context * context, SDL_PixelFormat format){
     sizeControl(context);
     positionControl(context);
     bakeControl(context, format);
+    context->settings->isBaked = 1;
 }
 
 void bakeResultToSurface(GUI_context * context, SDL_Surface * sur){

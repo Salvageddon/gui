@@ -53,7 +53,7 @@ int main(int argc, char * argv[]){
     GUI_appendEventHandler(button, GUI_EVENT_LEAVE, &leaveEventHandler);
     GUI_appendEventHandler(button, GUI_EVENT_LEFTCLICK, &leftClickEventHandler);
     
-    GUI_bakeGUI(win->guiBase, win->sur->format);
+    //GUI_bakeGUI(win->guiBase, win->sur->format);
 
     int loop = 1;
 
