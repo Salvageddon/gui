@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<linearView orientation="vertical" 
-            margin="10" 
-            padding="10 20"
-            width="size-max"
-            height="500"
-            item-alignment="stretch-between stretch-between">
-    <button margin="10" padding="10" width="size-min" height="size-min" id="#A00" text="Click me :3" text-size="20"></button>
-    <button margin="10" width="500" height="200"></button>
-    <view margin="10" width="200" height="150"></view>
+<linearView orientation="vertical"
+            height="size-min"
+            width="size-min"
+            margin="10"
+            padding="5"
+            item-alignment="start start">
+    <linearView orientation="horizontal"
+                height="50%"
+                width="size-min"
+                padding="5"
+                margin="5"
+                item-alignment="start start">
+        <button height="100" width="50%" margin="5" text="yep, I'm a button ^w^" text-size="10"/>
+        <button height="100" width="50%" margin="5"/>
+    </linearView>
+
+    <linearView orientation="vertical"
+                height="50%"
+                width="size-min"
+                padding="5"
+                margin="5"
+                item-alignment="start start">
+        <view height="100" width="100" margin="5"/>
+        <view height="100" width="100" margin="5"/>
+    </linearView>
 </linearView>

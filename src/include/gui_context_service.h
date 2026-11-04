@@ -21,6 +21,7 @@ typedef struct{
         allowVerticalBoxes,
         renderable;
         TextRenderData textData;
+        GUI_irect maxRect;
 } RenderData;
 
 typedef struct GUI_CONTEXT{

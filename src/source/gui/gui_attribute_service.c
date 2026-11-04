@@ -1,9 +1,10 @@
 #include "../../include/gui_attribute_service.h"
+#include <stdio.h>
 
 AttributeData attributeDefinitions[ATTRCOUNT] = {
     {"orientation", GUI_ATTRIBUTE_ORIENTATION, AUTO_INT},
-    {"width", GUI_ATTRIBUTE_WIDTH, AUTO_INT},
-    {"height", GUI_ATTRIBUTE_HEIGHT, AUTO_INT},
+    {"width", GUI_ATTRIBUTE_WIDTH, AUTO_FLOAT},
+    {"height", GUI_ATTRIBUTE_HEIGHT, AUTO_FLOAT},
     {"margin", GUI_ATTRIBUTE_MARGIN, AUTO_BOX},
     {"padding", GUI_ATTRIBUTE_PADDING, AUTO_BOX},
     {"item-alignment", GUI_ATTRIBUTE_ITEM_ALIGNMENT, AUTO_ALIGNMENT},
@@ -89,16 +90,16 @@ int getOrientation(Hashlist attributes){
     else return getInt(au);
 }
 
-int getWidth(Hashlist attributes){
+float getWidth(Hashlist attributes){
     Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_WIDTH);
     if(!au) return GUI_SIZE_MIN;
-    else return getInt(au);
+    else return getFloat(au);
 }
 
-int getHeight(Hashlist attributes){
+float getHeight(Hashlist attributes){
     Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_HEIGHT);
     if(!au) return GUI_SIZE_MIN;
-    else return getInt(au);
+    else return getFloat(au);
 }
 
 Box getMargin(Hashlist attributes){

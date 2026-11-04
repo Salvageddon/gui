@@ -2,6 +2,7 @@
 #include <salvagames/xmlReader.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int readOrientation(char * value){
     if(!strcmp(value, "horizontal")){
@@ -57,15 +58,25 @@ Box readBox(char * value){
     return o;
 }
 
-int readSize(char * value){
+float readSize(char * value){
     if(!strcmp(value, "size-min")){
         return GUI_SIZE_MIN;
     }
     else if(!strcmp(value, "size-max")){
         return GUI_SIZE_MAX;
     }
+    else if(value[strlen(value) - 1] == '%'){
+        char * newVal = rewriteString(value);
+        newVal[strlen(value) - 1] = '\0';
+
+        float ret = stringToInt(newVal);
+        free(newVal);
+
+        if(ret > 0 && ret <= 100) return ret * 0.01F;
+        else return GUI_SIZE_MIN;
+    }
     else{
-        return stringToInt(value);
+        return (float)stringToInt(value);
     }
 }
 
@@ -125,8 +136,12 @@ int readAttributes(GUI_context * context, xmlElement * el){
 
             case GUI_ATTRIBUTE_WIDTH:
             case GUI_ATTRIBUTE_HEIGHT:
+                float floatSize = readSize(attr->value);
+                setAttribute(&context->attributes, attrType, &floatSize, 0);
+            break;
+
             case GUI_ATTRIBUTE_TEXT_SIZE:
-                int size = readSize(attr->value);
+                int size = stringToInt(attr->value);
                 setAttribute(&context->attributes, attrType, &size, 0);
             break;
 
