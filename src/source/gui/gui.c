@@ -49,6 +49,11 @@ void GUI_renderGUI(GUI_context * context, SDL_Surface * sur){
         return;
     }
 
+    if(!context->settings->isBaked){
+        printf("GUI (renderGUI()): This GUI hasn't been baked. Do not render it raw! Call GUI_bake() to bake it.\n");
+        return;
+    }
+
     renderGui(context, sur);
 }
 

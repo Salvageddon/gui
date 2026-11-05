@@ -10,6 +10,7 @@ GuiSettings * createGuiSettings(void){
     o->oldHover = NULL;
     o->mouse = (Mouse){0, 0, 0};
     o->focusedFont = 0;
+    o->isBaked = 0;
 
     return o;
 }

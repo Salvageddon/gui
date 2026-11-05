@@ -17,6 +17,7 @@ typedef struct{
     GUI_context * hover, * oldHover;
     Mouse mouse;
     unsigned int focusedFont;
+    char isBaked;
 } GuiSettings;
 
 GuiSettings * createGuiSettings(void);

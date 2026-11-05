@@ -1,7 +1,6 @@
 #include "../include/gui.h"
 #include <stdio.h>
 #include <SDL3/SDL.h>
-#include <salvagames/xmlReader.h>
 
 #define FONTKEY 0xAAA
 
@@ -13,18 +12,6 @@ int failApplication(){
     GUI_destroyWindow(win);
     GUI_quit();
     return 0;
-}
-
-void enterEventHandler(GUI_context * context){
-    printf("Enter event worked. GUI is functional ^w^\n");
-}
-
-void leaveEventHandler(GUI_context * context){
-    printf("Leave event worked. Amaza Amaze Amaze!!!\n");
-}
-
-void leftClickEventHandler(GUI_context * context){
-    printf("Left click event worked\n");
 }
 
 int main(int argc, char * argv[]){
@@ -45,13 +32,7 @@ int main(int argc, char * argv[]){
     //Reading and adding font
     GUI_font * font = GUI_createFont("src/pub/font.bmp", 6, 10, 15, 0x000000);
     GUI_addFont(win->guiBase, font, FONTKEY);
-    //GUI_setFocusFont(win->guiBase, FONTKEY);
-    
-    //Interact with the upper button and it will output events into console
-    GUI_context * button = GUI_findContextById(win->guiBase, 0xa00);
-    GUI_appendEventHandler(button, GUI_EVENT_ENTER, &enterEventHandler);
-    GUI_appendEventHandler(button, GUI_EVENT_LEAVE, &leaveEventHandler);
-    GUI_appendEventHandler(button, GUI_EVENT_LEFTCLICK, &leftClickEventHandler);
+    GUI_setFocusFont(win->guiBase, FONTKEY);
     
     GUI_bakeGUI(win->guiBase, win->sur->format);
 

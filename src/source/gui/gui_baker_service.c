@@ -2,9 +2,52 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int unpercentWidth(GUI_context * context){
+    float width = getWidth(context->attributes);
+
+    if(width > 0 && width < 1){
+        Box margin = getMargin(context->attributes);
+        Box padding = getPadding(context->attributes);
+
+        return (width * context->renderData.maxRect.w) - margin.left - margin.right - padding.left - padding.right;
+    }
+    else{
+        return width;
+    }
+}
+
+int unpercentHeight(GUI_context * context){
+    float height = getHeight(context->attributes);
+    
+    if(height > 0 && height < 1){
+        Box margin = getMargin(context->attributes);
+        Box padding = getPadding(context->attributes);
+
+        return (height * context->renderData.maxRect.h) - margin.top - margin.bottom - padding.top - padding.bottom;
+    }
+    else{
+        return height;
+    }
+}
+
+void setMaxRect(GUI_context * context){
+    if(!context->parent){
+        context->renderData.maxRect.w = context->target->w;
+        context->renderData.maxRect.h = context->target->h;
+    }
+    else{
+        GUI_irect parentMargin = context->parent->renderData.maxRect;
+        Box margin = getMargin(context->parent->attributes);
+        Box padding = getPadding(context->parent->attributes);
+
+        context->renderData.maxRect.w = parentMargin.w - margin.left - margin.right - padding.left - padding.right;
+        context->renderData.maxRect.h = parentMargin.h - margin.top - margin.bottom - padding.top - padding.bottom;
+    }
+}
+
 int stretchParentsWidth(GUI_context * context){
     if(context->parent){
-        int parentWidthAttr = getWidth(context->parent->attributes);
+        int parentWidthAttr = unpercentWidth(context);
 
         if(parentWidthAttr == GUI_SIZE_MIN){
             int parentWidth = stretchParentsWidth(context->parent);
@@ -36,7 +79,7 @@ int stretchParentsWidth(GUI_context * context){
 
 int stretchParentsHeight(GUI_context * context){
     if(context->parent){
-        int parentHeightAttr = getHeight(context->parent->attributes);
+        int parentHeightAttr = unpercentHeight(context);
 
         if(parentHeightAttr == GUI_SIZE_MIN){
             int parentHeight = stretchParentsHeight(context->parent);
@@ -81,8 +124,10 @@ GUI_irect getRequestedSize(GUI_context * context){
 }
 
 void sizeControl(GUI_context * context){
-    int width = getWidth(context->attributes);
-    int height = getHeight(context->attributes);
+    setMaxRect(context);
+
+    int width = unpercentWidth(context);
+    int height = unpercentHeight(context);
 
     Box padding = getPadding(context->attributes);
     Box margin = getMargin(context->attributes);
@@ -396,6 +441,7 @@ void bakeGui(GUI_context * context, SDL_PixelFormat format){
     sizeControl(context);
     positionControl(context);
     bakeControl(context, format);
+    context->settings->isBaked = 1;
 }
 
 void bakeResultToSurface(GUI_context * context, SDL_Surface * sur){
