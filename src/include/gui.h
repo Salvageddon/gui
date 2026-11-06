@@ -162,6 +162,18 @@ void GUI_drawRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
 void GUI_fillRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color);
 
 /*
+    Draw a gradient filled rectangle on SDL_Surface.
+    \param sur target SDL_Surface
+    \param x x coordinate of the rectangle
+    \param y y coordinate of the rectangle
+    \param w width of the rectangle
+    \param h height of the rectangle
+    \param color1 top left color of the rectangle
+    \param color2 bottom right color of the rectangle
+*/
+void GUI_fillRectG(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color1, Uint32 color2);
+
+/*
     Set specified pixel on a SDL_Surface.
     \param sur target SDL_Surface
     \param x x coordinate of the pixel
