@@ -203,6 +203,15 @@ void GUI_fillRect(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color){
     fillRect(sur, x, y, w, h, color);
 }
 
+void GUI_fillRectG(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color1, Uint32 color2){
+    if(!sur){
+        printf("GUI (fillRectG()): Surface cannot be NULL.\n");
+        return;
+    }
+
+    fillRectG(sur, x, y, w, h, color1, color2);
+}
+
 void GUI_setPixel(SDL_Surface * sur, int x, int y, Uint32 pixel){
     setPixel(sur, x, y, pixel);
 }

@@ -63,6 +63,108 @@ void fillRectNV(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color){
     }
 }
 
+void fillRectG(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color1, Uint32 color2){
+    int xstart, ystart, x1, y1;
+
+    if(x < 0){
+        x1 = -x;
+        xstart = 0;
+    }
+    else{
+        x1 = 0;
+        xstart = x;
+    }
+
+    if(y < 0){
+        y1 = -y;
+        ystart = 0;
+    }
+    else{
+        y1 = 0;
+        ystart = y;
+    }
+
+    int xstartfirst = x1;
+    
+    int x2 = x + w;
+    int y2 = y + h;
+
+    x2 = x2 >= sur->w ? sur->w : x2;
+    y2 = y2 >= sur->h ? sur->h : y2;
+
+    const SDL_PixelFormatDetails * details = SDL_GetPixelFormatDetails(sur->format);
+
+    GUI_rgb col1 = getRGB(color1, details);
+    GUI_rgb col2 = getRGB(color2, details);
+
+    int rDiff = col2.r - col1.r;
+    int gDiff = col2.g - col1.g;
+    int bDiff = col2.b - col1.b;
+
+    float wInv = 1.0F / (float)w, hInv = 1.0F / (float)h;
+
+    for(int yy = ystart; yy < y2; yy++){
+        for(int xx = xstart; xx < x2; xx++){
+            float xa = x1 * wInv, 
+                  ya = y1 * hInv, 
+                  avg = (xa + ya) * 0.5F;
+
+            //printf("%f %f\n", xa, ya);
+
+            GUI_rgb color = {
+                ADDUINT8(col1.r, (avg * rDiff)),
+                ADDUINT8(col1.g, (avg * gDiff)),
+                ADDUINT8(col1.b, (avg * bDiff))
+            };
+
+            setPixel(sur, xx, yy, mapRGB(color, details));
+
+            x1++;
+        }
+        
+        x1 = xstartfirst;
+        y1++;
+    }
+}
+
+void fillRectGNV(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color1, Uint32 color2){
+    int x2 = x + w;
+    int y2 = y + h;
+
+    const SDL_PixelFormatDetails * details = SDL_GetPixelFormatDetails(sur->format);
+
+    GUI_rgb col1 = getRGB(color1, details);
+    GUI_rgb col2 = getRGB(color2, details);
+
+    int rDiff = col2.r - col1.r;
+    int gDiff = col2.g - col1.g;
+    int bDiff = col2.b - col1.b;
+
+    int x1 = 0, y1 = 0;
+    float wInv = 1.0F / (float)w, hInv = 1.0F / (float)h;
+
+    for(int yy = y; yy < y2; yy++){
+        for(int xx = x; xx < x2; xx++){
+            float xa = x1 * wInv, 
+                  ya = y1 * hInv, 
+                  avg = (xa + ya) * 0.5F;
+
+            GUI_rgb color = {
+                ADDUINT8(col1.r, (avg * rDiff)),
+                ADDUINT8(col1.g, (avg * gDiff)),
+                ADDUINT8(col1.b, (avg * bDiff))
+            };
+
+            setPixel(sur, xx, yy, mapRGB(color, details));
+
+            x1++;
+        }
+        
+        x1 = 0;
+        y1++;
+    }
+}
+
 void renderText(SDL_Surface * sur, TextRenderData renderData, int x, int y, int w, int h){
     int xStart = (w - renderData.textRect.w) * 0.5F;
     int yStart = (h - renderData.textRect.h) * 0.5F;

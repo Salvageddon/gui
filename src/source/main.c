@@ -22,36 +22,23 @@ int main(int argc, char * argv[]){
         return failApplication();
     }
 
-    //red rectangles are linearViews, blue ones are buttons, green are views (plain rectangles)
-    win->guiBase = GUI_readGUI("src/pub/interface.xml", win->sur);
-    
-    if(!win->guiBase){
-        return failApplication();
-    }
-    
-    //Reading and adding font
-    GUI_font * font = GUI_createFont("src/pub/font.bmp", 6, 10, 15, 0x000000);
-    GUI_addFont(win->guiBase, font, FONTKEY);
-    GUI_setFocusFont(win->guiBase, FONTKEY);
-    
-    GUI_bakeGUI(win->guiBase, win->sur->format);
-
     int loop = 1;
 
     while(loop){
         SDL_Event events;
 
         while(SDL_PollEvent(&events)){
-            GUI_listenForEvents(win->guiBase, events);
-
             switch(events.type){
                 case SDL_EVENT_QUIT:
                     loop = 0;
                 break;
             }
         }
+        
+        GUI_fillRectG(win->sur, 50, 50, 200, 200, 0xFF0000, 0x00FF00);
+        GUI_fillRectG(win->sur, 300, 50, 200, 200, 0x00FF00, 0x0000FF);
+        GUI_fillRectG(win->sur, 550, 50, 200, 200, 0x0000FF, 0xFF0000);
 
-        GUI_renderGUI(win->guiBase, win->sur);
         SDL_UpdateWindowSurface(win->win);
     }
 
