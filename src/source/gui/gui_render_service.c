@@ -109,8 +109,6 @@ void fillRectG(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color1, Uin
                   ya = y1 * hInv, 
                   avg = (xa + ya) * 0.5F;
 
-            //printf("%f %f\n", xa, ya);
-
             GUI_rgb color = {
                 ADDUINT8(col1.r, (avg * rDiff)),
                 ADDUINT8(col1.g, (avg * gDiff)),
@@ -165,7 +163,21 @@ void fillRectGNV(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color1, U
     }
 }
 
-void renderText(SDL_Surface * sur, TextRenderData renderData, int x, int y, int w, int h){
+void fillTheme(SDL_Surface * sur, int x, int y, int w, int h, int absx, int absy, SDL_Surface * eventSurface, float imw, float imh){
+    int x2 = x + w;
+    int y2 = y + h;
+
+    for(int yy = y; yy < y2; yy++){
+        for(int xx = x; xx < x2; xx++){
+            int xMap = (int)((absx + xx) * imw);
+            int yMap = (int)((absy + yy) * imh);
+
+            setPixel(sur, xx, yy, getPixel(eventSurface, xMap, yMap));
+        }
+    }
+}
+
+void renderText(SDL_Surface * sur, TextRenderData renderData, int x, int y, int w, int h, Uint32 color){
     int xStart = (w - renderData.textRect.w) * 0.5F;
     int yStart = (h - renderData.textRect.h) * 0.5F;
     
@@ -190,7 +202,7 @@ void renderText(SDL_Surface * sur, TextRenderData renderData, int x, int y, int 
                         int yy = (int)(renderData.chInv * y);
                         
                         if(pseudoPixels[yy * renderData.font->charWidth + xx]){
-                            pixels[(ty + y) * sur->w + (tx + x)] = 0xFFFFFF;
+                            pixels[(ty + y) * sur->w + (tx + x)] = color;
                         }
                     }
                 }
@@ -213,7 +225,7 @@ void renderText(SDL_Surface * sur, TextRenderData renderData, int x, int y, int 
             for(int j = 0; j < token->length; j++){
                 for(int y = 0; y < renderData.ch; y++){
                     for(int x = 0; x < renderData.cw; x++){
-                        pixels[(ty + y) * sur->w + (tx + x)] = 0xFFFFFF;
+                        pixels[(ty + y) * sur->w + (tx + x)] = color;
                     }
                 }
 
