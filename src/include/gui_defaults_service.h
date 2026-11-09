@@ -5,32 +5,35 @@
 
 #pragma once
 
-#include "gui_render_service.h"
 #include "gui_attribute_service.h"
 #include "gui_handler_service.h"
 #include "gui_mouse_service.h"
+#include "gui_theme_service.h"
 
 typedef struct{
     SDL_Surface * sur; 
     GUI_irect rect; 
     int generation;
+    Theme theme;
 } RenderArgs;
+
+typedef struct{
+    char isHovering, isClicked, isDisabled;
+} ContextState;
 
 typedef struct{
     SDL_Surface * sur;
     GUI_irect rect, controlRect; 
     int generation;
     TextRenderData renderData;
+    ContextState contextState;
+    Theme theme;
 } ButtonRenderArgs;
-
-typedef struct{
-    char isHovering;
-} ContextState;
 
 typedef struct{
     GUI_context * context;
     Hashlist * eventHandlers;
-    ContextState contextState;
+    ContextState * contextState;
     SDL_Event event;
 } ListenerData;
 

@@ -19,7 +19,8 @@ typedef struct{
         allowHeightGrow,
         allowHorizontalBoxes,
         allowVerticalBoxes,
-        renderable;
+        renderable,
+        alwaysUnrenderable;
         TextRenderData textData;
         GUI_irect maxRect;
 } RenderData;

@@ -3,44 +3,64 @@
 
 ListenerData hover, oldHover;
 
+SDL_Surface * getCurrentSurface(EventSurface eventSurface, ContextState contextState){
+    if(contextState.isDisabled){
+        return eventSurface.disabled;
+    }
+    else if(contextState.isClicked){
+        return eventSurface.click;
+    }
+    else if(contextState.isHovering){
+        return eventSurface.hover;
+    }
+    else{
+        return eventSurface.normal;
+    }
+}
+
+Uint32 getCurrentColor(EventColor eventColor, ContextState contextState){
+    if(contextState.isDisabled){
+        return eventColor.disabled;
+    }
+    else if(contextState.isClicked){
+        return eventColor.click;
+    }
+    else if(contextState.isHovering){
+        return eventColor.hover;
+    }
+    else{
+        return eventColor.normal;
+    }
+}
+
 void renderView(void * renderArgs){
     RenderArgs * ra = renderArgs;
-    GUI_rgb color;
-    color.r = 0;
-    color.g = 255 - ra->generation * 20;
-    color.b = 0;
+    SDL_Surface * border = ra->theme.borderGradient.normal;
 
-    fillRectNV(ra->sur, 0, 0, ra->rect.w, ra->rect.h, mapRGB(color, SDL_GetPixelFormatDetails(ra->sur->format)));
+    fillTheme(ra->sur, 0, 0, ra->rect.w, ra->rect.h, ra->rect.x, ra->rect.y, border, ra->theme.invMapWidth, ra->theme.invMapHeight);
 }
 
 void renderButton(void * buttonRenderArgs){
     ButtonRenderArgs * ra = buttonRenderArgs;
-    GUI_rgb color;
-    color.r = 0;
-    color.g = 0;
-    color.b = 255 - ra->generation * 20;
+    
+    SDL_Surface * primary = getCurrentSurface(ra->theme.primaryGradient, ra->contextState);
+    SDL_Surface * border = getCurrentSurface(ra->theme.borderGradient, ra->contextState);
+    Uint32 foreGround = getCurrentColor(ra->theme.foregroundColor, ra->contextState);
+    int borderSize = ra->theme.defaultBorderThickness;
 
-    fillRectNV(ra->sur, 0, 0, ra->rect.w, ra->rect.h, mapRGB(color, SDL_GetPixelFormatDetails(ra->sur->format)));
-    renderText(ra->sur, ra->renderData, ra->rect.x, ra->rect.y, ra->rect.w, ra->rect.h);
-}
-
-void renderLinearView(void * renderArgs){
-    RenderArgs * ra = renderArgs;
-    GUI_rgb color;
-    color.r = 255 - ra->generation * 20;
-    color.g = 0;
-    color.b = 0;
-
-    fillRectNV(ra->sur, 0, 0, ra->rect.w, ra->rect.h, mapRGB(color, SDL_GetPixelFormatDetails(ra->sur->format)));
+    fillTheme(ra->sur, 0, 0, ra->rect.w, ra->rect.h, ra->rect.x, ra->rect.y, border, ra->theme.invMapWidth, ra->theme.invMapHeight);
+    fillTheme(ra->sur, borderSize, borderSize, ra->rect.w - (2*borderSize), ra->rect.h - (2*borderSize), ra->rect.x + borderSize, ra->rect.y + borderSize, primary, ra->theme.invMapWidth, ra->theme.invMapHeight);
+    renderText(ra->sur, ra->renderData, ra->rect.x, ra->rect.y, ra->rect.w, ra->rect.h, foreGround);
 }
 
 void buttonEventListener(ListenerData data){
-    if(data.contextState.isHovering){
+    if(data.contextState->isHovering){
         switch(data.event.type){
             case SDL_EVENT_MOUSE_BUTTON_DOWN:
                 switch(data.event.button.button){
                     case SDL_BUTTON_LEFT:
                         callEventHandler(data.context, data.eventHandlers, GUI_EVENT_LEFTCLICK);
+                        data.contextState->isClicked = 1;
                     break;
 
                     case SDL_BUTTON_MIDDLE:
@@ -49,6 +69,14 @@ void buttonEventListener(ListenerData data){
 
                     case SDL_BUTTON_RIGHT:
                         callEventHandler(data.context, data.eventHandlers, GUI_EVENT_RIGHTCLICK);
+                    break;
+                }
+            break;
+
+            case SDL_EVENT_MOUSE_BUTTON_UP:
+                switch(data.event.button.button){
+                    case SDL_BUTTON_LEFT:
+                        data.contextState->isClicked = 0;
                     break;
                 }
             break;
