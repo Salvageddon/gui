@@ -5,7 +5,7 @@
 int unpercentWidth(GUI_context * context){
     float width = getWidth(context->attributes);
 
-    if(width > 0 && width < 1){
+    if(width > 0 && width <= 1){
         Box margin = getMargin(context->attributes);
         Box padding = getPadding(context->attributes);
 
@@ -19,7 +19,7 @@ int unpercentWidth(GUI_context * context){
 int unpercentHeight(GUI_context * context){
     float height = getHeight(context->attributes);
     
-    if(height > 0 && height < 1){
+    if(height > 0 && height <= 1){
         Box margin = getMargin(context->attributes);
         Box padding = getPadding(context->attributes);
 
@@ -425,7 +425,7 @@ void bakeControl(GUI_context * context, SDL_PixelFormat format){
         SDL_DestroySurface(child->bakeResult);
         
         if(child->renderData.renderable){
-            if(child->renderer){
+            if(child->renderer && !child->renderData.alwaysUnrenderable){
                 child->bakeResult = SDL_CreateSurface(child->paddingRect.w, child->paddingRect.h, format);
                 void * renderArgs = getRenderArgs(child);
                 child->renderer(renderArgs);
@@ -472,7 +472,7 @@ void renderGui(GUI_context * context, SDL_Surface * sur){
     for(int i = 0; i < context->children.length; i++){
         GUI_context * child = LST_get(context->children, i);
 
-        if(child->renderData.renderable) bakeResultToSurface(child, sur);
+        if(child->renderData.renderable && !child->renderData.alwaysUnrenderable) bakeResultToSurface(child, sur);
         renderGui(child, sur);
     }
 }

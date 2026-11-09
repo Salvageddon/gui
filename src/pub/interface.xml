@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <linearView orientation="vertical"
-            height="size-min"
-            width="size-min"
-            margin="10"
             padding="5"
+            width="size-min"
+            height="size-min"
             item-alignment="start start">
     <linearView orientation="horizontal"
-                height="50%"
                 width="size-min"
-                padding="5"
-                margin="5"
+                height="size-min"
                 item-alignment="start start">
-        <button height="100" width="50%" margin="5" text="yep, I'm a button ^w^" text-size="10"/>
-        <button height="100" width="50%" margin="5"/>
+        <button height="50%" width="50%" margin="5" text="Hemlo hooman" text-size="20"/>
+        <button height="50%" width="50%" margin="5" text="We are buttons :3" text-size="20"/>
     </linearView>
 
-    <linearView orientation="vertical"
-                height="50%"
+    <linearView orientation="horizontal"
                 width="size-min"
-                padding="5"
-                margin="5"
+                height="size-min"
                 item-alignment="start start">
-        <view height="100" width="100" margin="5"/>
-        <view height="100" width="100" margin="5"/>
+        <button height="50%" width="50%" margin="5" text="Next to me is a view -->" text-size="20"/>
+        <view height="50%" width="50%" margin="5"/>
     </linearView>
 </linearView>

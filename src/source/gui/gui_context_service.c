@@ -14,7 +14,8 @@ GUI_context * createContext(GUI_context * parent, int type){
     GUI_context * o = malloc(sizeof(GUI_context));
 
     o->type = type;
-    o->renderData = (RenderData){0, 0, 0, 0, 1, createTextData()};
+    o->renderData = (RenderData){0, 0, 0, 0, 1, 0, createTextData()};
+    o->contextState = (ContextState){0, 0, 0};
     o->controlRect = (GUI_irect){0, 0, 0, 0};
     o->paddingRect = (GUI_irect){0, 0, 0, 0};
     o->marginRect = (GUI_irect){0, 0, 0, 0};
@@ -33,9 +34,9 @@ GUI_context * createContext(GUI_context * parent, int type){
         break;
 
         case GUI_CONTROL_LINEARVIEW:
-            o->renderer = &renderLinearView;
             o->possibleAttributes = (PossibleAttributes){linearViewAttributes, LINEARVIEW_ATTRCNT};
             o->listener = &fakeEventListener;
+            o->renderData.alwaysUnrenderable = 1;
         break;
 
         case GUI_CONTROL_VIEW:
@@ -46,6 +47,7 @@ GUI_context * createContext(GUI_context * parent, int type){
 
         case GUI_CONTROL_BASE: 
             o->renderData.renderable = 0;
+            o->renderData.alwaysUnrenderable = 1;
             o->listener = &fakeEventListener;
         break;
 
@@ -76,12 +78,14 @@ void destroyContext(void * context){
         destroyContext(LST_get(ctx->children, i));
     }
 
-    LST_clear(&ctx->renderData.textData.tokens, 1);
-    
     LST_clear(&ctx->children, 0);
+    
+    LST_clear(&ctx->renderData.textData.tokens, 1);
     HLS_clear(&ctx->attributes, 1);
     HLS_clear(&ctx->eventHandlers, 0);
     SDL_DestroySurface(ctx->bakeResult);
+
+    if(ctx->type == GUI_CONTROL_BASE) destroyGuiSettings(ctx->settings);
 
     free(context);
 }
@@ -108,6 +112,8 @@ void * getRenderArgs(GUI_context * context){
             buttonRA->controlRect = context->controlRect;
             buttonRA->generation = context->generation;
             buttonRA->renderData = context->renderData.textData;
+            buttonRA->theme = context->settings->theme;
+            buttonRA->contextState = context->contextState;
         return buttonRA;
 
         default:
@@ -115,6 +121,7 @@ void * getRenderArgs(GUI_context * context){
             ra->sur = context->bakeResult;
             ra->rect = context->paddingRect;
             ra->generation = context->generation;
+            ra->theme = context->settings->theme;
             return ra;
     }
 }
