@@ -5,8 +5,9 @@
 
 #pragma once
 
-#include "gui_render_service.h"
+#include "gui_pixel_service.h"
 #include "gui_auto_service.h"
+#include "gui_text_service.h"
 
 #include "gui_enums.h"
 #include "gui_types.h"

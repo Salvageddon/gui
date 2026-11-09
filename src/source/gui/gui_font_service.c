@@ -9,16 +9,14 @@ GUI_font * createFont(const char * path, int charWidth, int charHeight, int char
     Uint32 * tmpPixels, unfuckedMask;
 
     if(!tmp){
+        setErrorMessage((char*)SDL_GetError());
         tmpPixels = NULL;
         unfuckedMask = mask;
     }
     else{
         tmpPixels = tmp->pixels;
         const SDL_PixelFormatDetails * details = SDL_GetPixelFormatDetails(tmp->format);
-        
-        Uint8 r, g, b;
-        SDL_GetRGB(mask, details, NULL, &r, &g, &b);
-        unfuckedMask = SDL_MapRGB(details, NULL, r, g, b);
+        unfuckedMask = mapRGB(getRGB(mask, details), details);
     }
      
     int charSize = charWidth * charHeight;

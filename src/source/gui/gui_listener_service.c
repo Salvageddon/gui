@@ -13,7 +13,7 @@ int isHovering(GUI_context * context){
 }
 
 void callListener(GUI_context * context, SDL_Event event){
-    context->listener((ListenerData){context, &context->eventHandlers, &context->contextState, event});
+    context->listener((ListenerData){context, &context->eventHandlers, context->contextState, event});
 }
 
 void updateHoverLoop(GUI_context * context){

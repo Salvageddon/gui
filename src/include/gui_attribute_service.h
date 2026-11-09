@@ -7,6 +7,7 @@
 
 #include "gui_pixel_service.h"
 #include "gui_auto_service.h"
+#include "gui_text_service.h"
 
 #include "gui_enums.h"
 #include <salvagames/hashlist.h>

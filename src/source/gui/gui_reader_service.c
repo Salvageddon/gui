@@ -241,7 +241,6 @@ GUI_context * readGui(const char * source, SDL_Surface * sur){
     GUI_context * base = createContext(NULL, GUI_CONTROL_BASE);
     base->renderer = NULL;
     base->target = sur;
-    setTheme(base->settings, sur, 0x00BBAA, 0x0000AA, 0xFFFFFF, 30, -30, 20, 5, 100, 100);
 
     int baseOrientation = GUI_ORIENTATION_HORIZONTAL, 
         baseSize = GUI_SIZE_MAX;

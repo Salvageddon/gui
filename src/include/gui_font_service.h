@@ -1,11 +1,13 @@
 /*
     Font operation functions
-    Treachery
+    Fraud
 */
 
 #pragma once
 
-#include <SDL3/SDL.h>
+#include "gui_utility_service.h"
+#include "gui_errors_service.h"
+#include "gui_color_service.h"
 
 #define CHARCOUNT 96
 

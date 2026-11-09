@@ -5,8 +5,7 @@
 
 #pragma once
 
-#include "gui_pixel_service.h"
-#include "gui_text_service.h"
+#include "gui_font_service.h"
 
 enum AutoTypes{
     AUTO_INT = 0xF000A1,
