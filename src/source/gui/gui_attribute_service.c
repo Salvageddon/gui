@@ -10,7 +10,8 @@ AttributeData attributeDefinitions[ATTRCOUNT] = {
     {"item-alignment", GUI_ATTRIBUTE_ITEM_ALIGNMENT, AUTO_ALIGNMENT},
     {"id", GUI_ATTRIBUTE_ID, AUTO_HEX},
     {"text", GUI_ATTRIBUTE_TEXT, AUTO_STRING},
-    {"text-size", GUI_ATTRIBUTE_TEXT_SIZE, AUTO_INT}
+    {"text-size", GUI_ATTRIBUTE_TEXT_SIZE, AUTO_INT},
+    {"disabled", GUI_ATTRIBUTE_DISABLED, AUTO_BOOL}
 };
 
 AllowedAttribute viewAttributes[VIEW_ATTRCNT] = {
@@ -18,7 +19,8 @@ AllowedAttribute viewAttributes[VIEW_ATTRCNT] = {
     {2, 1}, 
     {3, 0}, 
     {4, 0},
-    {6, 0}
+    {6, 0},
+    {9, 0}
 };
 
 AllowedAttribute buttonAttributes[BUTTON_ATTRCNT] = {
@@ -28,7 +30,8 @@ AllowedAttribute buttonAttributes[BUTTON_ATTRCNT] = {
     {4, 0},
     {6, 0},
     {7, 0},
-    {8, 0}
+    {8, 0},
+    {9, 0}
 };
 
 AllowedAttribute linearViewAttributes[LINEARVIEW_ATTRCNT] = {
@@ -38,7 +41,8 @@ AllowedAttribute linearViewAttributes[LINEARVIEW_ATTRCNT] = {
     {3, 0}, 
     {4, 0}, 
     {5, 1},
-    {6, 0}
+    {6, 0},
+    {9, 0}
 };
 
 int findAutoType(int attrType){
@@ -136,4 +140,10 @@ int getTextSize(Hashlist attributes){
     Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_TEXT_SIZE);
     if(!au) return -1;
     else return getInt(au);
+}
+
+char getDisabled(Hashlist attributes){
+    Auto * au = HLS_get(attributes, GUI_ATTRIBUTE_DISABLED);
+    if(!au) return 0;
+    else return getBool(au);
 }

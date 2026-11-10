@@ -40,6 +40,11 @@ Auto * typeAuto(Auto * o, int type, void * value, int stringLength){
             *((Alignment*)o->value) = *((Alignment*)value);
         break;
 
+        case AUTO_BOOL:
+            o->value = malloc(sizeof(char));
+            *((char*)o->value) = *((char*)value);
+        break;
+
         default:
             free(o);
             o = NULL;
@@ -81,6 +86,10 @@ Box getBox(Auto * au){
 
 Alignment getAlignment(Auto * au){
     return *((Alignment*)au->value);
+}
+
+char getBool(Auto * au){
+    return *((char*)au->value);
 }
 
 void destroyAuto(void * au){

@@ -9,7 +9,7 @@
                 height="size-min"
                 item-alignment="start start">
         <button height="50%" width="50%" margin="5" text="Hemlo hooman" text-size="20"/>
-        <button height="50%" width="50%" margin="5" text="We are buttons :3" text-size="20"/>
+        <button height="50%" width="50%" margin="5" text="We are buttons :3" text-size="20" disabled="true"/>
     </linearView>
 
     <linearView orientation="horizontal"

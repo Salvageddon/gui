@@ -239,6 +239,8 @@ void sizeControl(GUI_context * context){
     if(context->paddingRect.w <= 0 || context->paddingRect.h <= 0){
         context->renderData.renderable = 0;
     }
+
+    context->contextState.isDisabled = getDisabled(context->attributes);
 }
 
 void positionControl(GUI_context * context);

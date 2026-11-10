@@ -120,6 +120,15 @@ Alignment readAligment(char * value){
     return o;
 }
 
+char readBool(char * value){
+    if(!strcmp(value, "true")){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
 int readAttributes(GUI_context * context, xmlElement * el){
     int hasErrored = 0;
 
@@ -174,6 +183,11 @@ int readAttributes(GUI_context * context, xmlElement * el){
 
             case GUI_ATTRIBUTE_TEXT:
                 setAttribute(&context->attributes, attrType, attr->value, attr->valueLength);
+            break;
+
+            case GUI_ATTRIBUTE_DISABLED:
+                char boolVal = readBool(attr->value);
+                setAttribute(&context->attributes, attrType, &boolVal, 0);
             break;
         }
 
