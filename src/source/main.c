@@ -14,6 +14,10 @@ int failApplication(){
     return 0;
 }
 
+void clickEventHandler(GUI_context * context){
+    printf("Don't touch my button!! >//w//<\n");
+}
+
 int main(int argc, char * argv[]){
     GUI_init(SDL_INIT_VIDEO);
     win = GUI_createWindow(":3", 1280, 720, 0);
@@ -32,6 +36,9 @@ int main(int argc, char * argv[]){
     GUI_addFont(win->guiBase, font, FONTKEY);
     GUI_setFocusFont(win->guiBase, FONTKEY);
 
+    GUI_context * button = GUI_findContextById(win->guiBase, 0xA00);
+    GUI_appendEventHandler(button, GUI_EVENT_LEFTCLICK, &clickEventHandler);
+
     GUI_bakeGUI(win->guiBase, win->sur->format);
 
     int loop = 1;
@@ -40,6 +47,8 @@ int main(int argc, char * argv[]){
         SDL_Event events;
 
         while(SDL_PollEvent(&events)){
+            GUI_listenForEvents(win->guiBase, events);
+
             switch(events.type){
                 case SDL_EVENT_QUIT:
                     loop = 0;

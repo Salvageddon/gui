@@ -1,6 +1,6 @@
 /*
     GUI baking and rendering functions
-    Gluttony
+    Layer 4
 */
 
 #pragma once
@@ -9,3 +9,4 @@
 
 void bakeGui(GUI_context * context, SDL_PixelFormat format);
 void renderGui(GUI_context * context, SDL_Surface * sur);
+void bakeOnlyThisControl(GUI_context * context, SDL_PixelFormat format);

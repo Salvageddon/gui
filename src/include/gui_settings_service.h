@@ -1,6 +1,6 @@
 /*
     GUI settings and data functions
-    Wrath
+    Layer 6
 */
 
 #pragma once
@@ -16,6 +16,7 @@ typedef struct{
     Hashlist ids, fonts;
     GUI_context * hover, * oldHover;
     Mouse mouse;
+    CursorData cursorData;
     unsigned int focusedFont;
     char isBaked, hasTheme;
     Theme theme;

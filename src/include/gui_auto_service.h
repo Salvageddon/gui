@@ -1,6 +1,6 @@
 /*
     Automatic type operation functions
-    Violence
+    Layer 8
 */
 
 #pragma once
@@ -14,7 +14,8 @@ enum AutoTypes{
     AUTO_HEX,
     AUTO_STRING,
     AUTO_BOX,
-    AUTO_ALIGNMENT
+    AUTO_ALIGNMENT,
+    AUTO_BOOL
 };
 
 typedef struct{
@@ -38,4 +39,5 @@ Uint32 getHex(Auto * au);
 char * getString(Auto * au);
 Box getBox(Auto * au);
 Alignment getAlignment(Auto * au);
+char getBool(Auto * au);
 void destroyAuto(void * au);

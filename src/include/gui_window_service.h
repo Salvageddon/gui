@@ -1,11 +1,10 @@
 /*
     Window management functions
-    Lust
+    Layer 2
 */
 
 #pragma once
 
-#include "gui_baker_service.h"
 #include "gui_listener_service.h"
 
 #include "gui_types.h"

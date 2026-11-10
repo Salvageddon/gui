@@ -1,6 +1,6 @@
 /*
     Pixel operation functions
-    Fraud
+    Layer 9
 */
 
 #pragma once

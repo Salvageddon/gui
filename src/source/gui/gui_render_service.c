@@ -241,3 +241,7 @@ void renderText(SDL_Surface * sur, TextRenderData renderData, int x, int y, int 
         }
     }
 }
+
+void fillSurface(SDL_Surface * sur, Uint32 color){
+    fillRectNV(sur, 0, 0, sur->w, sur->h, color);
+}

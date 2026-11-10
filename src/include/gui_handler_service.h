@@ -1,6 +1,6 @@
 /*
     Event handler calling functions
-    Heresy
+    Layer 7
 */
 
 #pragma once

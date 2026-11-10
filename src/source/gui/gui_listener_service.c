@@ -30,6 +30,16 @@ void updateHoverLoop(GUI_context * context){
 void updateHover(GUI_context * context){
     context->settings->mouse = getMouseState();
 
+    if(context->settings->hover){
+        if(!isHovering(context->settings->hover)){
+            callEventHandler(context->settings->oldHover, &context->settings->hover->eventHandlers, GUI_EVENT_LEAVE);
+            context->settings->hover->contextState.isHovering = 0;
+            context->settings->hover->contextState.isClicked = 0;
+            setCursor(&context->settings->cursorData, GUI_CURSOR_ARROW);
+            context->settings->hover = NULL;
+        }
+    }
+    
     context->settings->oldHover = context->settings->hover;
     updateHoverLoop(context);
 
@@ -37,17 +47,23 @@ void updateHover(GUI_context * context){
         if(context->settings->oldHover){
             callEventHandler(context->settings->oldHover, &context->settings->oldHover->eventHandlers, GUI_EVENT_LEAVE);
             context->settings->oldHover->contextState.isHovering = 0;
+            context->settings->oldHover->contextState.isClicked = 0;
+            bakeOnlyThisControl(context->settings->oldHover, context->target->format);
+            setCursor(&context->settings->cursorData, GUI_CURSOR_ARROW);
         }
 
         if(context->settings->hover){
             callEventHandler(context->settings->hover, &context->settings->hover->eventHandlers, GUI_EVENT_ENTER);
             context->settings->hover->contextState.isHovering = 1;
+            bakeOnlyThisControl(context->settings->hover, context->target->format);
+            if(!context->settings->hover->contextState.isDisabled) setCursor(&context->settings->cursorData, context->settings->hover->defaultCursorId);
         }
     }
 }
 
 void eventLoop(GUI_context * context, SDL_Event event){
     callListener(context, event);
+    bakeOnlyThisControl(context, context->target->format);
 
     for(int i = 0; i < context->children.length; i++){
         GUI_context * child = LST_get(context->children, i);

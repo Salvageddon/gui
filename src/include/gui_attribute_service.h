@@ -1,6 +1,6 @@
 /*
     Attribute operation functions
-    Heresy
+    Layer 7
 */
 
 #pragma once
@@ -11,10 +11,10 @@
 #include "gui_enums.h"
 #include <salvagames/hashlist.h>
 
-#define ATTRCOUNT 9
-#define VIEW_ATTRCNT 5
-#define BUTTON_ATTRCNT 7
-#define LINEARVIEW_ATTRCNT 7
+#define ATTRCOUNT 10
+#define VIEW_ATTRCNT 6
+#define BUTTON_ATTRCNT 8
+#define LINEARVIEW_ATTRCNT 8
 
 typedef struct{
     char * name;
@@ -49,3 +49,4 @@ Alignment getItemAlignment(Hashlist attributes);
 Uint32 getId(Hashlist attributes);
 char * getText(Hashlist attributes);
 int getTextSize(Hashlist attributes);
+char getDisabled(Hashlist attributes);

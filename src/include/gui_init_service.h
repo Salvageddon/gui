@@ -1,11 +1,10 @@
 /*
     SDL init functions
-    Lust
+    Layer 2
 */
 
 #pragma once
 
-#include "gui_baker_service.h"
 #include "gui_listener_service.h"
 
 #include <SDL3/SDL.h>

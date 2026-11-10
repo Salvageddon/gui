@@ -1,6 +1,6 @@
 /*
     Control default listeners, style and functions
-    Wrath
+    Layer 6
 */
 
 #pragma once
@@ -11,15 +11,15 @@
 #include "gui_theme_service.h"
 
 typedef struct{
+    char isHovering, isClicked, isDisabled;
+} ContextState;
+
+typedef struct{
     SDL_Surface * sur; 
     GUI_irect rect; 
     int generation;
     Theme theme;
 } RenderArgs;
-
-typedef struct{
-    char isHovering, isClicked, isDisabled;
-} ContextState;
 
 typedef struct{
     SDL_Surface * sur;
