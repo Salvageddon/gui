@@ -26,7 +26,7 @@ typedef struct{
 } RenderData;
 
 typedef struct GUI_CONTEXT{
-    int type, generation;
+    int type, generation, defaultCursorId;
     RenderData renderData;
     ContextState contextState;
     GUI_irect controlRect, paddingRect, marginRect, contentRect;
@@ -42,7 +42,7 @@ typedef struct GUI_CONTEXT{
 
 typedef struct{
     char * name;
-    int type;
+    int type, cursorId;
 } controlData;
 
 extern controlData controlDefinitions[CONTROLCOUNT];

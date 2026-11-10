@@ -12,6 +12,7 @@ GuiSettings * createGuiSettings(void){
     o->focusedFont = 0;
     o->isBaked = 0;
     o->hasTheme = 0;
+    o->cursorData = createCursorData();
 
     return o;
 }
@@ -24,6 +25,7 @@ void destroyGuiSettings(GuiSettings * settings){
     if(settings->hasTheme) destroyTheme(&settings->theme);
     HLS_clear(&settings->ids, 0);
     HLS_clear(&settings->fonts, 1);
+    HLS_clear(&settings->cursorData.cursors, 1);
     free(settings);
 }
 

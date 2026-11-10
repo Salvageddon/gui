@@ -43,3 +43,9 @@ enum GUI_eventTypes{
     GUI_EVENT_MIDDLECLICK,
     GUI_EVENT_RIGHTCLICK,
 };
+
+enum GUI_cursorTypes{
+    GUI_CURSOR_ARROW = 0xE00000,
+    GUI_CURSOR_HAND,
+    GUI_CURSOR_BEAM
+};

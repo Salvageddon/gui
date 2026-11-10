@@ -3,9 +3,9 @@
 #include <stdio.h>
 
 controlData controlDefinitions[CONTROLCOUNT] = {
-    {"view", GUI_CONTROL_VIEW},
-    {"button", GUI_CONTROL_BUTTON},
-    {"linearView", GUI_CONTROL_LINEARVIEW}
+    {"view", GUI_CONTROL_VIEW, GUI_CURSOR_ARROW},
+    {"button", GUI_CONTROL_BUTTON, GUI_CURSOR_HAND},
+    {"linearView", GUI_CONTROL_LINEARVIEW, GUI_CURSOR_ARROW}
 };
 
 void fakeEventListener(ListenerData hewwo){}
@@ -14,6 +14,7 @@ GUI_context * createContext(GUI_context * parent, int type){
     GUI_context * o = malloc(sizeof(GUI_context));
 
     o->type = type;
+    o->defaultCursorId = controlDefinitions[type - 1 - GUI_CONTROL_BASE].cursorId;
     o->renderData = (RenderData){0, 0, 0, 0, 1, 0, createTextData()};
     o->contextState = (ContextState){0, 0, 0};
     o->controlRect = (GUI_irect){0, 0, 0, 0};

@@ -9,6 +9,7 @@ GUI_font * createFont(const char * path, int charWidth, int charHeight, int char
     Uint32 * tmpPixels, unfuckedMask;
 
     if(!tmp){
+        setErrorMessage((char*)SDL_GetError());
         tmpPixels = NULL;
         unfuckedMask = mask;
     }
