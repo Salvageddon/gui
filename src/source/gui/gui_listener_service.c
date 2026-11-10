@@ -37,17 +37,21 @@ void updateHover(GUI_context * context){
         if(context->settings->oldHover){
             callEventHandler(context->settings->oldHover, &context->settings->oldHover->eventHandlers, GUI_EVENT_LEAVE);
             context->settings->oldHover->contextState.isHovering = 0;
+            context->settings->oldHover->contextState.isClicked = 0;
+            bakeOnlyThisControl(context->settings->oldHover, context->target->format);
         }
 
         if(context->settings->hover){
             callEventHandler(context->settings->hover, &context->settings->hover->eventHandlers, GUI_EVENT_ENTER);
             context->settings->hover->contextState.isHovering = 1;
+            bakeOnlyThisControl(context->settings->hover, context->target->format);
         }
     }
 }
 
 void eventLoop(GUI_context * context, SDL_Event event){
     callListener(context, event);
+    bakeOnlyThisControl(context, context->target->format);
 
     for(int i = 0; i < context->children.length; i++){
         GUI_context * child = LST_get(context->children, i);

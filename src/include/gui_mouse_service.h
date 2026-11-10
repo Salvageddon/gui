@@ -1,6 +1,6 @@
 /*
     Mouse operation functions
-    Heresy
+    Layer 7
 */
 
 #pragma once

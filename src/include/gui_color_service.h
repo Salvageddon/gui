@@ -1,9 +1,12 @@
 /*
     Color conversion functions
-    Treachery
+    Layer 10
 */
 
 #pragma once
+
+#include "gui_errors_service.h"
+#include "gui_utility_service.h"
 
 #include "gui_types.h"
 

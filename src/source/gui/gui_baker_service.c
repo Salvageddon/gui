@@ -299,14 +299,14 @@ void positionHorizontally(GUI_context * context){
             break;
         }
 
-        child->marginRect.x += context->controlRect.x + xAlign;
-        child->marginRect.y += context->controlRect.y + yAlign;
+        child->marginRect.x = context->controlRect.x + xAlign;
+        child->marginRect.y = context->controlRect.y + yAlign;
 
-        child->paddingRect.x += child->marginRect.x + childMargin.left;
-        child->paddingRect.y += child->marginRect.y + childMargin.top;
+        child->paddingRect.x = child->marginRect.x + childMargin.left;
+        child->paddingRect.y = child->marginRect.y + childMargin.top;
 
-        child->controlRect.x += child->paddingRect.x + childPadding.left;
-        child->controlRect.y += child->paddingRect.y + childPadding.top;
+        child->controlRect.x = child->paddingRect.x + childPadding.left;
+        child->controlRect.y = child->paddingRect.y + childPadding.top;
 
         if(prevChild){
             child->controlRect.x += xpos;
@@ -382,14 +382,14 @@ void positionVertically(GUI_context * context){
             break;
         }
 
-        child->marginRect.x += context->controlRect.x + xAlign;
-        child->marginRect.y += context->controlRect.y + yAlign;
+        child->marginRect.x = context->controlRect.x + xAlign;
+        child->marginRect.y = context->controlRect.y + yAlign;
 
-        child->paddingRect.x += child->marginRect.x + childMargin.left;
-        child->paddingRect.y += child->marginRect.y + childMargin.top;
+        child->paddingRect.x = child->marginRect.x + childMargin.left;
+        child->paddingRect.y = child->marginRect.y + childMargin.top;
 
-        child->controlRect.x += child->paddingRect.x + childPadding.left;
-        child->controlRect.y += child->paddingRect.y + childPadding.top;
+        child->controlRect.x = child->paddingRect.x + childPadding.left;
+        child->controlRect.y = child->paddingRect.y + childPadding.top;
 
         if(prevChild){
             child->controlRect.y += ypos;
@@ -476,5 +476,16 @@ void renderGui(GUI_context * context, SDL_Surface * sur){
 
         if(child->renderData.renderable && !child->renderData.alwaysUnrenderable) bakeResultToSurface(child, sur);
         renderGui(child, sur);
+    }
+}
+
+void bakeOnlyThisControl(GUI_context * context, SDL_PixelFormat format){
+    SDL_DestroySurface(context->bakeResult);
+        
+    if(context->renderData.renderable && context->renderer && !context->renderData.alwaysUnrenderable){
+        context->bakeResult = SDL_CreateSurface(context->paddingRect.w, context->paddingRect.h, format);
+        void * renderArgs = getRenderArgs(context);
+        context->renderer(renderArgs);
+        free(renderArgs);
     }
 }

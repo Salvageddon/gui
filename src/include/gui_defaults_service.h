@@ -1,6 +1,6 @@
 /*
     Control default listeners, style and functions
-    Wrath
+    Layer 6
 */
 
 #pragma once

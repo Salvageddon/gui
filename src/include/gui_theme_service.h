@@ -1,6 +1,6 @@
 /*
     Theme operation functions
-    Heresy
+    Layer 7
 */
 
 #pragma once

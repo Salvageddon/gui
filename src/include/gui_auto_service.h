@@ -1,6 +1,6 @@
 /*
     Automatic type operation functions
-    Violence
+    Layer 8
 */
 
 #pragma once

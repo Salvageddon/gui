@@ -54,6 +54,7 @@ void GUI_renderGUI(GUI_context * context, SDL_Surface * sur){
         return;
     }
 
+    fillSurface(sur, 0);
     renderGui(context, sur);
 }
 

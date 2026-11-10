@@ -1,6 +1,6 @@
 /*
     GUI settings and data functions
-    Wrath
+    Layer 6
 */
 
 #pragma once

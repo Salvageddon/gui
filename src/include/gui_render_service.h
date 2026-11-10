@@ -1,6 +1,6 @@
 /*
     Shape rendering functions
-    Violence
+    Layer 8
 */
 
 #pragma once
@@ -18,3 +18,4 @@ void fillRectG(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color1, Uin
 void fillRectGNV(SDL_Surface * sur, int x, int y, int w, int h, Uint32 color1, Uint32 color2);
 void fillTheme(SDL_Surface * sur, int x, int y, int w, int h, int absx, int absy, SDL_Surface * eventSurface, float imw, float imh);
 void renderText(SDL_Surface * sur, TextRenderData renderData, int x, int y, int w, int h, Uint32 color);
+void fillSurface(SDL_Surface * sur, Uint32 color);

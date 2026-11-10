@@ -40,6 +40,8 @@ int main(int argc, char * argv[]){
         SDL_Event events;
 
         while(SDL_PollEvent(&events)){
+            GUI_listenForEvents(win->guiBase, events);
+
             switch(events.type){
                 case SDL_EVENT_QUIT:
                     loop = 0;

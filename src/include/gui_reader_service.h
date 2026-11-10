@@ -1,6 +1,6 @@
 /*
     XML reading functions
-    Limbo
+    Layer 1
 */
 
 #pragma once
